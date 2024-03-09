@@ -16,6 +16,7 @@ interface InputProps {
     register: UseFormRegister<FieldValues>,
     errors: FieldErrors,
     disabled?: boolean;
+    color?: string;
 }
 
 const Input: FC<InputProps> = ({
@@ -25,12 +26,17 @@ const Input: FC<InputProps> = ({
     required,
     register,
     errors,
-    disabled
+    disabled,
+    color = 'text-gray-800'
 }) => {
     return (
         <div>
             <label
-                className='block text-sm font-medium text-gray-900'
+                className={clsx(`
+                    block 
+                    text-md 
+                    font-medium 
+                    ${color}`)}
                 htmlFor={id}
             >
                 {label}

@@ -7,7 +7,7 @@ import axios from 'axios';
 
 import { useCallback, useState, useEffect } from "react";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
-import { BsGithub, BsGoogle } from 'react-icons/bs';
+import { BsGoogle } from 'react-icons/bs';
 import { toast } from 'react-hot-toast';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -104,6 +104,7 @@ const AuthForm = () => {
                                 register={register}
                                 errors={errors}
                                 disabled={isLoading}
+                                color={'text-gray-200'}
                             />
                         )}
                     <Input
@@ -113,6 +114,7 @@ const AuthForm = () => {
                         register={register}
                         errors={errors}
                         disabled={isLoading}
+                        color={'text-gray-200'}
                     />
                     <Input
                         id="password"
@@ -121,6 +123,7 @@ const AuthForm = () => {
                         register={register}
                         errors={errors}
                         disabled={isLoading}
+                        color={'text-gray-200'}
                     />
                     <div>
                         <Button
@@ -137,7 +140,7 @@ const AuthForm = () => {
                         <div className='absolute inset-0 flex items-center'>
                             <div className='w-full border-t border-gray-200' />
                         </div>
-                        <div className='relative flex justify-center text-sm'>
+                        <div className='relative flex justify-center text-md'>
                             <span className="bg-neutral-900 px-2 text-gray-200">
                                 Or Continue With
                             </span>
@@ -145,22 +148,18 @@ const AuthForm = () => {
                     </div>
                     <div className='mt-6 flex gap-2'>
                         <AuthSocialButton
-                            icon={BsGithub}
-                            onClick={() => socialAction('github')}
-                        />
-                        <AuthSocialButton
                             icon={BsGoogle}
                             onClick={() => socialAction('google')}
                         />
                     </div>
                 </div>
-                <div className='flex gap-2 justify-center text-sm mt-6 px-2'>
+                <div className='flex gap-2 justify-center text-md mt-6 px-2'>
                     <div className="text-gray-200">
-                        {variant === 'LOGIN' ? 'New To HaloTalk?' : 'Already Have An Account?'}
+                        {variant === 'LOGIN' ? 'New To SereniChat?' : 'Already Have An Account?'}
                     </div>
                     <div 
                         onClick={toggleVariant}
-                        className='underline cursor-pointer text-sky-300'
+                        className='underline cursor-pointer text-teal-500'
                     >
                         {variant === 'LOGIN' ? 'Create An Account' : 'Login'}
                     </div>
