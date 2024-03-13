@@ -1,11 +1,11 @@
 import getConversationById from "../../../app/actions/getConversationById";
 import getMessages from "../../../app/actions/getMessages";
-import getSession from "../../../app/actions/getSession";
 
 import Header from "../../../app/conversations/[conversationId]/components/Header";
 import Body from "../../../app/conversations/[conversationId]/components/Body";
 import Form from "../../../app/conversations/[conversationId]/components/Form";
 
+import EmptyState from "@/app/components/EmptyState";
 
 import React from "react";
 
@@ -17,13 +17,22 @@ const conversationId = async ({ params }: { params: IParams }) => {
     const conversation = await getConversationById(params.conversationId);
     const messages = await getMessages(params.conversationId);
 
-    const session = await getSession();
+
+    if (!conversation) {
+        return (
+            <div className="lg:pl-80 h-full">
+            <div className="h-full flex flex-col">
+                <EmptyState />
+            </div>
+        </div>
+        );
+    }
     
     return (
         <div className="lg:pl-80 h-full">
             <div className="h-full flex flex-col">
                 <Header />
-                <Body />
+                <Body initialMessages={messages}/>
                 <Form />
             </div>
         </div>

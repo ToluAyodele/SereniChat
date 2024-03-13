@@ -10,6 +10,8 @@ import Header from "./[conversationId]/components/Header";
 import Body from "./[conversationId]/components/Body";
 import Form from "./[conversationId]/components/Form";
 
+import EmptyBody from "../../app/conversations/[conversationId]/components/EmptyBody";
+
 const Home = () => {
     const { isOpen } = useConversation();
 
@@ -21,7 +23,7 @@ const Home = () => {
             <div className="lg:pl-20 h-full">
                 <div className="h-full flex flex-col">
                     <Header />
-                    <Body />
+                    <EmptyBody />
                     <Form />
                 </div>
             </div>
