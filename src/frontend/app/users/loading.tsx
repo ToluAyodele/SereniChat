@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LoadingModal from '../components/LoadingModal';
+import LoadingModal from '../components/modals/LoadingModal';
 
 const Loading = () => {
     return (

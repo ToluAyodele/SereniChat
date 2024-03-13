@@ -1,7 +1,9 @@
 'use client';
 
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
+import { HiArrowUp } from "react-icons/hi2";
+import { set } from "lodash";
 
 interface MessageInputProps {
     placeholder?: string;
@@ -20,25 +22,70 @@ const MessageInput: FC<MessageInputProps> = ({
     register,
     errors
 }) => {
+    const [height, setHeight] = useState('auto');
+
+    const handleTextChange = (e) => {
+        const textarea = e.target;
+        textarea.style.height = '16px';
+        
+        const scHeight = textarea.scrollHeight;
+        textarea.style.height = `${scHeight}px`;
+        setHeight(`${scHeight}px`);
+    };
+
+
     return (
-        <div className="relative w-full">
-            <input 
+        <div className="relative flex w-1/2 px-16">
+            <textarea
                 id={id}
-                type={type}
                 autoComplete={id}
-                { ...register(id, { required })}
-                placeholder={placeholder}
+                { ...register(id, { required } )}
+                placeholder={ placeholder }
+                onChange={ handleTextChange }
                 className="
                     text-black
-                    font-light
-                    py-2
-                    px-4
-                    bg-neutral-100
+                    placeholder-black
+                    text-lg
+                    bg-neutral-300
                     w-full
-                    rounded-full
+                    rounded-lg
                     focus:outline-none
+                    p-4
+                    max-h-64
+                    h-16
+                    overflow-y-hidden
+                    resize-none
+                    mx-16
                 "
             />
+            <button
+                type="submit"
+                className="
+                    pr-3
+                    pt-3
+                    cursor-pointer
+                    transition
+                    absolute
+                    h-12
+                    w-12
+                    top-0
+                    bottom-0
+                    right-0"
+                style={{ marginRight: '135px' }}
+            >
+                    <HiArrowUp 
+                        size={36}
+                        className="
+                            text-black 
+                            rounded-lg 
+                            bg-white 
+                            border-2 
+                            border-black
+                            p-1
+                            mr-2
+                        " 
+                    />
+                </button>
         </div>
     );
 }

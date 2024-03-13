@@ -5,12 +5,12 @@ import React, { FC, useState } from 'react';
 import { FieldValues, useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import Button from '../../../app/components/Button';
-import Input from '../../../app/components/Input';
-import Modal from '../../../app/components/Modal';
+import Button from '../../components/inputs/Button';
+import Input from '../../components/inputs/Input';
+import Modal from '../../components/modals/Modal';
 import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import Select from '../../../app/components/Select';
+import Select from '../../components/Select';
 
 interface GroupChatModalProps {
     isOpen?: boolean;

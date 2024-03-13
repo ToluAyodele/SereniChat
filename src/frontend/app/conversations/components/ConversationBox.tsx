@@ -7,10 +7,10 @@ import { format } from 'date-fns';
 import { useSession } from 'next-auth/react';
 import clsx from 'clsx';
 
-import AvatarGroup from '../../../app/components/AvatarGroup';
-import { FullConversationType } from '../../../app/types';
-import useOtherUser from '../../../app/hooks/useOtherUser';
-import Avatar from '../../../app/components/Avatar';
+import AvatarGroup from '../../components/desktop-view/AvatarGroup';
+import { FullConversationType } from '../../types';
+import useOtherUser from '../../hooks/useOtherUser';
+import Avatar from '../../components/desktop-view/Avatar';
 
 interface ConversationBoxProps {
     data: FullConversationType,
@@ -66,11 +66,12 @@ const ConversationBox: FC<ConversationBoxProps> = ({
                 flex
                 items-center
                 space-x-3
-                hover:bg-neutral-100
+                hover:bg-teal-400
                 rounded-lg
                 transition
                 cursor-pointer
-            `, selected ? 'bg-neutral-100' : 'bg-white'
+                px-5
+            `, 'bg-teal-600'
             )}
             onClick={handleClick}
         >
@@ -81,19 +82,19 @@ const ConversationBox: FC<ConversationBoxProps> = ({
             )}
             <div className="min-w-0 flex-1 my-3">
                 <div className='flex justify-between items-center mb-1'>
-                    <p className="text-md font-medium text-gray-900">
+                    <p className="text-md font-medium text-black">
                         { data.name || otherUser.name }
                     </p>
                     {lastMessage?.createdAt && (
-                        <p className='text-xs text-gray-400 font-light'>
+                        <p className='text-md text-black font-light'>
                             {format(new Date(lastMessage.createdAt), 'p')}
                         </p>
                     )}
                 </div>
                 <p className={clsx(`
                     truncate
-                    text-sm
-                `, hasSeen ? 'text-gray-500' : 'text-black font-medium'
+                    text-md
+                `, hasSeen ? 'text-black' : 'text-black font-medium'
                 )}>
                     {lastMessageText}
                 </p>

@@ -12,14 +12,12 @@ export default async function ConversationsLayout({ children }: { children: Reac
 
 
     return (
-        <Sidebar>
-            <div className="h-full">
-                <ConversationList
-                    users={users}
-                    initialItems={conversations}
-                />
-                {children}
-            </div>
-        </Sidebar>
+        <div className="h-full">
+            <ConversationList
+                users={users}
+                initialItems={conversations}
+            />
+            { children }
+        </div>
     )
 };

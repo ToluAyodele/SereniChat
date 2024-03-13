@@ -1,136 +1,190 @@
 "use client";
 
 import React, { FC, useEffect, useMemo, useState } from "react";
-import { find } from 'lodash';
-import { FullConversationType } from "../../../app/types";
+import { find } from "lodash";
+import { FullConversationType } from "../../types";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
-import useConversation from "../../../app/hooks/useConversation";
+import useConversation from "../../hooks/useConversation";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import { useSession } from "next-auth/react";
 
 import ConversationBox from "./ConversationBox";
 import GroupChatModal from "./GroupChatModal";
-import { pusherClient } from "../../../app/modules/pusher";
-import { User } from '@prisma/client';
+import { pusherClient } from "../../modules/pusher";
+import { User } from "@prisma/client";
+
+// new imports added
+import Avatar from "../../components/desktop-view/Avatar";
+import useRoutes from "../../hooks/useRoutes";
+import DesktopItem from "../../components/desktop-view/DesktopItem";
+import { HiOutlinePlusCircle, HiEllipsisHorizontal, HiArrowLeftOnRectangle } from "react-icons/hi2";
+import { signOut } from 'next-auth/react';
+// import ProfileDrawer from '../[conversationId]/components/ProfileDrawer'; // for the ellipsis menu
 
 interface ConversationListProps {
-    initialItems: FullConversationType[];
-    users: User[];
+  initialItems: FullConversationType[];
+  users: User[];
 }
 
-const ConversationList: FC<ConversationListProps> = ({ initialItems, users }) => {
-    const session = useSession();
-    const [items, setItems] = useState(initialItems);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+const ConversationList: FC<ConversationListProps> = ({
+  initialItems,
+  users,
+}) => {
+  const session = useSession();
+  const [items, setItems] = useState(initialItems);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-    const router = useRouter();
+  const router = useRouter();
 
-    const { isOpen, conversationId } = useConversation();
+  const { isOpen, conversationId } = useConversation();
 
-    const pusherKey = useMemo(() => {
-        return session.data?.user?.email;
-    }, [session.data?.user?.email]);
+  const logoutRoute = useRoutes()[1];
 
-    useEffect(() => {
-        if (!pusherKey) {
-            return;
+  const pusherKey = useMemo(() => {
+    return session.data?.user?.email;
+  }, [session.data?.user?.email]);
+
+  useEffect(() => {
+    if (!pusherKey) {
+      return;
+    }
+
+    pusherClient.subscribe(pusherKey);
+
+    const newHandler = (conversation: FullConversationType) => {
+      setItems((current) => {
+        if (find(current, { id: conversation.id })) {
+          return current;
         }
 
-        pusherClient.subscribe(pusherKey);
+        return [conversation, ...current];
+      });
+    };
 
-        const newHandler = (conversation: FullConversationType) => {
-            setItems((current) => {
-                if (find(current, { id: conversation.id })) {
-                    return current;
-                }
+    const updateHandler = (conversation: FullConversationType) => {
+      setItems((current) =>
+        current.map((currentConversation) => {
+          if (currentConversation.id === conversation.id) {
+            return {
+              ...currentConversation,
+              messages: conversation.messages,
+            };
+          }
+          return currentConversation;
+        })
+      );
+    };
 
-                return [conversation, ...current];
-            });
-        };
+    const removeHandler = (conversation: FullConversationType) => {
+      setItems((current) => {
+        return [...current.filter((convo) => convo.id !== conversation.id)];
+      });
 
-        const updateHandler = (conversation: FullConversationType) => {
-            setItems((current) => current.map((currentConversation) => {
-                if (currentConversation.id === conversation.id) {
-                    return {
-                        ...currentConversation,
-                        messages: conversation.messages
-                    }
-                }
-                return currentConversation;
-            }))
-        }
+      if (conversationId === conversation.id) {
+        router.push("/conversations");
+      }
+    };
 
-        const removeHandler = (conversation: FullConversationType) => {
-            setItems((current) => {
-                return [...current.filter((convo) => convo.id !== conversation.id)]
-            });
+    pusherClient.bind("conversation:new", newHandler);
+    pusherClient.bind("conversation:update", updateHandler);
+    pusherClient.bind("conversation:remove", removeHandler);
 
-            if (conversationId === conversation.id) {
-                router.push('/conversations');
-            }
-        };
+    return () => {
+      pusherClient.unsubscribe(pusherKey);
+      pusherClient.unbind("conversation:new", newHandler);
+      pusherClient.unbind("conversation:update", updateHandler);
+      pusherClient.unbind("conversation:remove", removeHandler);
+    };
+  }, [pusherKey]);
 
-        pusherClient.bind('conversation:new', newHandler);
-        pusherClient.bind('conversation:update', updateHandler);
-        pusherClient.bind('conversation:remove', removeHandler);
-
-        return () => {
-            pusherClient.unsubscribe(pusherKey);
-            pusherClient.unbind('conversation:new', newHandler);
-            pusherClient.unbind('conversation:update', updateHandler);
-            pusherClient.unbind('conversation:remove', removeHandler);
-        }
-
-    }, [pusherKey]);
-
-    return (
-        <>
-            <GroupChatModal
-                users={users}
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-            />
-            <aside
-                className={clsx(
-                    `
+  return (
+    <>
+      {/* <GroupChatModal
+        users={users}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      /> */}
+      {/* <ProfileDrawer
+                data={conversation}
+                isOpen={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+    /> */}
+      <aside
+        className={clsx(
+          `
                     fixed
                     inset-y-0
                     pb-20
                     lg:pb-0
-                    lg:left-20
-                    lg:w-80
+                    lg:w-96
                     lg:block
                     overflow-y-auto
-                    border-r
-                    border-gray-200
+                    border-none
+                    bg-teal-600
                 `,
-                    isOpen ? "hidden" : "block w-full left-0"
-                )}
+          isOpen ? "hidden" : "block w-full left-0"
+        )}
+      >
+        <div className="flex flex-col justify-between min-h-screen">
+          <div className="px-5">
+            <div className="flex justify-between mb-4 pt-4">
+              <nav className="mt-4 px-4 cursor-pointer hover:opacity-75 transition">
+                <Avatar />
+              </nav>
+              <div className="py-5">
+                <HiEllipsisHorizontal
+                  size={38}
+                  onClick={() => setDrawerOpen(true)}
+                  className="text-black hover:text-teal-200 transition cursor-pointer"
+                />
+              </div>
+            </div>
+            <button
+              className="
+                    flex
+                    items-center
+                    justify-between
+                    text-3xl 
+                    text-black 
+                    bg-white 
+                    rounded-lg 
+                    text-center
+                    px-5
+                    ml-4
+                    mb-12
+                    mt-8
+                    cursor-pointer"
+              style={{ width: "319px" }}
             >
-                <div className="px-5">
-                    <div className="flex justify-between mb-4 pt-4">
-                        <div className="text-2xl font-bold text-neutral-800">
-                            Messages
-                        </div>
-                        <div 
-                            onClick={() => setIsModalOpen(true)}
-                            className="rounded-full p-2 bg-gray-200 text-gray-600 cursor-pointer hover:opacity-75 transition"
-                        >
-                            <MdOutlineGroupAdd size={20} />
-                        </div>
-                    </div>
-                    { items.map((item) => (
-                        <ConversationBox 
-                            key={item.id}
-                            data={item}
-                            selected={conversationId === item.id}
-                        />
-                    )) }
-                </div>
-            </aside>
-        </>
-    );
+              <div className="py-3 ml-4">
+                <HiOutlinePlusCircle size={40} />
+              </div>
+              <span className="mr-8">New Chat</span>
+            </button>
+            {items.map((item) => (
+              <ConversationBox
+                key={item.id}
+                data={item}
+                selected={conversationId === item.id}
+              />
+            ))}
+          </div>
+          <div className="mt-auto">
+            <div className="text-2xl font-bold list-none">
+              <DesktopItem
+                label={'Logout'}
+                icon={HiArrowLeftOnRectangle}
+                href={'/'}
+                onClick={ () => signOut() }
+              />
+            </div>
+          </div>
+        </div>
+      </aside>
+    </>
+  );
 };
 
 export default ConversationList;

@@ -3,7 +3,7 @@
 import React, { FC } from 'react';
 import Image from 'next/image';
 
-import Modal from '../../../../app/components/Modal';
+import Modal from '../../../components/modals/Modal';
 
 interface ImageModalProps {
     isOpen?: boolean;

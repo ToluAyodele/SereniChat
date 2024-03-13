@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import Sidebar from '../components/Sidebar';
 import getUsers from '../actions/getUsers';

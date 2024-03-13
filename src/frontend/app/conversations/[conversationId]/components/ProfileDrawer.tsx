@@ -6,7 +6,7 @@ import { Transition, Dialog } from '@headlessui/react';
 import { IoClose, IoTrash } from 'react-icons/io5';
 
 import Avatar from '../../../../app/components/Avatar';
-import AvatarGroup from '../../../../app/components/AvatarGroup';
+import AvatarGroup from '../../../components/desktop-view/AvatarGroup';
 import { Conversation, User } from '@prisma/client';
 import ConfirmModal from './ConfirmModal';
 import useOtherUser from '../../../../app/hooks/useOtherUser';

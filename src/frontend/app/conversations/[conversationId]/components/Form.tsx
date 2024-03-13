@@ -43,37 +43,26 @@ const Form = () => {
     }
 
     return (
-        <div className="py-4 px-4 ng-white border-t flex items-center gap-2 lg:gap-4 w-full">
-            <CldUploadButton
-                options={{ maxFiles: 1 }}
-                onUpload={handleUpload}
-                uploadPreset="znkthrez"
-            >
-                <HiPhoto size={30} className="text-sky-500" />
-            </CldUploadButton>
+        <div className="mb-12 px-4 ng-white border-none flex items-center gap-2 lg:gap-4 w-full">
             <form 
                 action="POST"
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={ handleSubmit(onSubmit) }
                 className="
                     flex
                     items-center
                     gap-2
                     lg:gap-4
-                    w-full"
+                    w-full
+                    justify-center"
             >
                 <MessageInput 
                     id='message'
                     register={register}
                     errors={errors}
                     required
-                    placeholder="Write a message"
+                    placeholder="Message Serenity..."
                 />
-                <button
-                    type="submit"
-                    className="rounded-full p-2 bg-sky-500 cursor-pointer hover:bg-sky-600 transition"
-                >
-                    <HiPaperAirplane size={18} className="text-white" />
-                </button>
+                
             </form>
         </div>
     );

@@ -8,8 +8,8 @@ import { FieldValues, useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
 
-import Button from '../../app/components/Button';
-import Input from '../../app/components/Input';
+import Button from '../inputs/Button';
+import Input from '../inputs/Input';
 import Modal from './Modal';
 import { CldUploadButton } from 'next-cloudinary';
 

@@ -6,7 +6,7 @@ import { FC, useState } from 'react';
 import { FullMessageType } from '../../../../app/types';
 import { useSession } from 'next-auth/react';
 
-import Avatar from '../../../../app/components/Avatar';
+import Avatar from '../../../../app/components/desktop-view/Avatar';
 import Image from 'next/image';
 import ImageModal from './ImageModal';
 import React from 'react';

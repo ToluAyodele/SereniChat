@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 import Avatar from '../../components/desktop-view/Avatar';
-import LoadingModal from '../../components/LoadingModal';
+import LoadingModal from '../../components/modals/LoadingModal';
 
 interface UserBoxProps {
     data: User;

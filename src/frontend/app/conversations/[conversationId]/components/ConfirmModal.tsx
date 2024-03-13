@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation';
 import React, { FC, useCallback, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-import Button from '../../../../app/components/Button';
+import Button from '../../../components/inputs/Button';
 import useConversation from '../../../../app/hooks/useConversation';
-import Modal from '../../../../app/components/Modal';
+import Modal from '../../../components/modals/Modal';
 import { FiAlertTriangle } from 'react-icons/fi';
 
 

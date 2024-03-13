@@ -11,8 +11,8 @@ import ToasterContext from './context/ToasterContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'HaloTalk',
-  description: 'Real-Time Messaging Application',
+  title: 'SereniChat',
+  description: 'AI-powered therapist chat application',
 }
 
 export default function RootLayout({

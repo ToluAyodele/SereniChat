@@ -6,6 +6,10 @@ import clsx from 'clsx';
 import useConversation from '../hooks/useConversation';
 import EmptyState from '../components/EmptyState';
 
+import Header from "./[conversationId]/components/Header";
+import Body from "./[conversationId]/components/Body";
+import Form from "./[conversationId]/components/Form";
+
 const Home = () => {
     const { isOpen } = useConversation();
 
@@ -14,7 +18,13 @@ const Home = () => {
             'lg:pl-80 h-full lg:block',
             isOpen ? 'hidden lg:block' : 'hidden'
         )}>
-            <EmptyState />
+            <div className="lg:pl-20 h-full">
+                <div className="h-full flex flex-col">
+                    <Header />
+                    <Body />
+                    <Form />
+                </div>
+            </div>
         </div>
     )
 }

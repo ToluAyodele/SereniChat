@@ -39,7 +39,7 @@ const Input: FC<InputProps> = ({
                     ${color}`)}
                 htmlFor={id}
             >
-                {label}
+                { label }
             </label>
             <div className='mt-2'>
                 <input
@@ -47,7 +47,7 @@ const Input: FC<InputProps> = ({
                     type={type}
                     autoComplete={id}
                     disabled={disabled}
-                    {...register(id, { required })}
+                    { ...register(id, { required } )}
                     className={clsx(`
                         form-input
                         block
@@ -65,7 +65,8 @@ const Input: FC<InputProps> = ({
                         focus:ring-inset
                         focus:ring-sky-300
                         sm:text-sm
-                        sm:leading-6`,
+                        sm:leading-6
+                        `,
                         errors[id] && 'focus:ring-rose-500',
                         disabled && 'opacity-50')}
                     />
