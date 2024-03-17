@@ -4,10 +4,8 @@ import React from 'react';
 import clsx from 'clsx';
 
 import useConversation from '../hooks/useConversation';
-import EmptyState from '../components/EmptyState';
 
 import Header from "./[conversationId]/components/Header";
-import Body from "./[conversationId]/components/Body";
 import Form from "./[conversationId]/components/Form";
 
 import EmptyBody from "../../app/conversations/[conversationId]/components/EmptyBody";

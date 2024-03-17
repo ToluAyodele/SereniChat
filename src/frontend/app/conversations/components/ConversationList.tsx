@@ -6,17 +6,14 @@ import { FullConversationType } from "../../types";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import useConversation from "../../hooks/useConversation";
-import { MdOutlineGroupAdd } from "react-icons/md";
 import { useSession } from "next-auth/react";
 
 import ConversationBox from "./ConversationBox";
-import GroupChatModal from "./GroupChatModal";
 import { pusherClient } from "../../modules/pusher";
 import { User } from "@prisma/client";
 
 // new imports added
 import Avatar from "../../components/desktop-view/Avatar";
-import useRoutes from "../../hooks/useRoutes";
 import DesktopItem from "../../components/desktop-view/DesktopItem";
 import { HiOutlinePlusCircle, HiEllipsisHorizontal, HiArrowLeftOnRectangle } from "react-icons/hi2";
 import { signOut } from 'next-auth/react';
@@ -33,14 +30,11 @@ const ConversationList: FC<ConversationListProps> = ({
 }) => {
   const session = useSession();
   const [items, setItems] = useState(initialItems);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const router = useRouter();
 
   const { isOpen, conversationId } = useConversation();
-
-  const logoutRoute = useRoutes()[1];
 
   const pusherKey = useMemo(() => {
     return session.data?.user?.email;
@@ -101,16 +95,6 @@ const ConversationList: FC<ConversationListProps> = ({
 
   return (
     <>
-      {/* <GroupChatModal
-        users={users}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      /> */}
-      {/* <ProfileDrawer
-                data={conversation}
-                isOpen={drawerOpen}
-                onClose={() => setDrawerOpen(false)}
-    /> */}
       <aside
         className={clsx(
           `

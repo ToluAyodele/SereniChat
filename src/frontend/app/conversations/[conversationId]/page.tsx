@@ -5,7 +5,7 @@ import Header from "../../../app/conversations/[conversationId]/components/Heade
 import Body from "../../../app/conversations/[conversationId]/components/Body";
 import Form from "../../../app/conversations/[conversationId]/components/Form";
 
-import EmptyState from "@/app/components/EmptyState";
+import EmptyState from "../../../app/components/EmptyState";
 
 import React from "react";
 

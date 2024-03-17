@@ -5,8 +5,7 @@ import { format } from 'date-fns';
 import { Transition, Dialog } from '@headlessui/react';
 import { IoClose, IoTrash } from 'react-icons/io5';
 
-import Avatar from '../../../../app/components/Avatar';
-import AvatarGroup from '../../../components/desktop-view/AvatarGroup';
+import Avatar from '../../../../app/components/desktop-view/Avatar';
 import { Conversation, User } from '@prisma/client';
 import ConfirmModal from './ConfirmModal';
 import useOtherUser from '../../../../app/hooks/useOtherUser';
@@ -104,12 +103,7 @@ const ProfileDrawer: FC<ProfileDrawerProps> = ({
                                             <div className='relative mt-6 flex-1 px-4 sm:px-6'>
                                                 <div className='flex flex-col items-center'>
                                                     <div className='mt-6'>
-                                                        { data.isGroup ? (
-                                                            <AvatarGroup users={data.users} />
-                                                        ) : (
-                                                            <Avatar user={otherUser} />
-                                                        
-                                                        )}
+                                                        { <Avatar user={otherUser} /> }
                                                     </div>
                                                     <div>
                                                         {title}

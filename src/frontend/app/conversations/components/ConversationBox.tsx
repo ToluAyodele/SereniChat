@@ -7,7 +7,6 @@ import { format } from 'date-fns';
 import { useSession } from 'next-auth/react';
 import clsx from 'clsx';
 
-import AvatarGroup from '../../components/desktop-view/AvatarGroup';
 import { FullConversationType } from '../../types';
 import useOtherUser from '../../hooks/useOtherUser';
 import Avatar from '../../components/desktop-view/Avatar';
@@ -35,16 +34,6 @@ const ConversationBox: FC<ConversationBoxProps> = ({
         return messages[messages.length - 1];
     }, [data.messages]);
 
-    const userEmail = useMemo(() => {
-        return session.data?.user?.email;
-    }, [session.data?.user?.email]);
-
-    const hasSeen = useMemo(() => {
-        if (!lastMessage) { return false; }
-        const seenArray = lastMessage.seen || [];
-        if (!userEmail) { return false; }
-        return seenArray.filter((user) => user.email === userEmail).length !== 0;
-    }, [userEmail, lastMessage]);
 
     const lastMessageText = useMemo(() => {
         if (lastMessage?.images) {
@@ -75,11 +64,7 @@ const ConversationBox: FC<ConversationBoxProps> = ({
             )}
             onClick={handleClick}
         >
-            { data.isGroup ? (
-                <AvatarGroup users={data.users} />
-            ) : (
-                <Avatar user={otherUser} />
-            )}
+            { <Avatar user={otherUser} /> }
             <div className="min-w-0 flex-1 my-3">
                 <div className='flex justify-between items-center mb-1'>
                     <p className="text-md font-medium text-black">
@@ -94,7 +79,7 @@ const ConversationBox: FC<ConversationBoxProps> = ({
                 <p className={clsx(`
                     truncate
                     text-md
-                `, hasSeen ? 'text-black' : 'text-black font-medium'
+                `, 'text-black font-medium'
                 )}>
                     {lastMessageText}
                 </p>

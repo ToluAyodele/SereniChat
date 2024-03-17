@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { HiChevronLeft, HiEllipsisHorizontal } from 'react-icons/hi2';
 
 import Avatar from '../../../../app/components/desktop-view/Avatar';
-import AvatarGroup from '../../../components/desktop-view/AvatarGroup';
 import { Conversation, User } from '@prisma/client';
 import ProfileDrawer from './ProfileDrawer';
 import useOtherUser from '../../../../app/hooks/useOtherUser';
