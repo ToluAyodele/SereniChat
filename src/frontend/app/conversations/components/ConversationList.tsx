@@ -9,7 +9,6 @@ import useConversation from "../../hooks/useConversation";
 import { useSession } from "next-auth/react";
 
 import ConversationBox from "./ConversationBox";
-import { pusherClient } from "../../modules/pusher";
 import { User } from "@prisma/client";
 
 // new imports added
@@ -17,6 +16,7 @@ import Avatar from "../../components/desktop-view/Avatar";
 import DesktopItem from "../../components/desktop-view/DesktopItem";
 import { HiOutlinePlusCircle, HiEllipsisHorizontal, HiArrowLeftOnRectangle } from "react-icons/hi2";
 import { signOut } from 'next-auth/react';
+import { v4 as uuidv4 } from 'uuid';
 // import ProfileDrawer from '../[conversationId]/components/ProfileDrawer'; // for the ellipsis menu
 
 interface ConversationListProps {
@@ -44,8 +44,6 @@ const ConversationList: FC<ConversationListProps> = ({
     if (!pusherKey) {
       return;
     }
-
-    pusherClient.subscribe(pusherKey);
 
     const newHandler = (conversation: FullConversationType) => {
       setItems((current) => {
@@ -81,16 +79,6 @@ const ConversationList: FC<ConversationListProps> = ({
       }
     };
 
-    pusherClient.bind("conversation:new", newHandler);
-    pusherClient.bind("conversation:update", updateHandler);
-    pusherClient.bind("conversation:remove", removeHandler);
-
-    return () => {
-      pusherClient.unsubscribe(pusherKey);
-      pusherClient.unbind("conversation:new", newHandler);
-      pusherClient.unbind("conversation:update", updateHandler);
-      pusherClient.unbind("conversation:remove", removeHandler);
-    };
   }, [pusherKey]);
 
   return (
@@ -126,6 +114,7 @@ const ConversationList: FC<ConversationListProps> = ({
               </div>
             </div>
             <button
+              onClick={() => router.push(`/conversations/${uuidv4()}`)}
               className="
                     flex
                     items-center

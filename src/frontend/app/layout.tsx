@@ -4,7 +4,6 @@ import React, { ReactNode } from 'react'
 
 import './globals.css'
 
-import ActiveStatus from './components/ActiveStatus';
 import AuthContext from './context/AuthContext'
 import ToasterContext from './context/ToasterContext'
 
@@ -28,7 +27,6 @@ export default function RootLayout({
       >
         <AuthContext>
           <ToasterContext />
-          <ActiveStatus />
           { children }
         </AuthContext>
       </body>

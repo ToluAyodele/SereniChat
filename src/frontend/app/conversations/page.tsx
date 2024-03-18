@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import useConversation from '../hooks/useConversation';
 
-import Header from "./[conversationId]/components/Header";
 import Form from "./[conversationId]/components/Form";
 
 import EmptyBody from "../../app/conversations/[conversationId]/components/EmptyBody";
@@ -20,7 +19,6 @@ const Home = () => {
         )}>
             <div className="lg:pl-20 h-full">
                 <div className="h-full flex flex-col">
-                    <Header />
                     <EmptyBody />
                     <Form />
                 </div>

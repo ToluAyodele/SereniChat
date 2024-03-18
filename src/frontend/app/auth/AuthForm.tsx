@@ -1,7 +1,7 @@
 'use client';
 
-import Input from '../../app/components/Input';
-import Button from '../../app/components/Button';
+import Input from '../../app/components/inputs/Input';
+import Button from '../../app/components/inputs/Button';
 import AuthSocialButton from './AuthSocialButton';
 import axios from 'axios';
 

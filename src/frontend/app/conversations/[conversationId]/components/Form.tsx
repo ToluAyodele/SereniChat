@@ -26,18 +26,13 @@ const Form = () => {
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setValue('message', '', { shouldValidate: true });
 
+        console.log(conversationId, 'convoID');
+
         axios.post('/api/messages', {
             ...data,
             conversationId
         })
     };
-
-    const handleUpload = (result: any) => {
-        axios.post('/api/messages', {
-            image: result?.info?.secure_url,
-            conversationId
-        })
-    }
 
     return (
         <div className="mb-12 px-4 ng-white border-none flex items-center gap-2 lg:gap-4 w-full">

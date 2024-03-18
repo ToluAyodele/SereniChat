@@ -1,7 +1,6 @@
 import getConversationById from "../../../app/actions/getConversationById";
 import getMessages from "../../../app/actions/getMessages";
 
-import Header from "../../../app/conversations/[conversationId]/components/Header";
 import Body from "../../../app/conversations/[conversationId]/components/Body";
 import Form from "../../../app/conversations/[conversationId]/components/Form";
 
@@ -31,7 +30,6 @@ const conversationId = async ({ params }: { params: IParams }) => {
     return (
         <div className="lg:pl-80 h-full">
             <div className="h-full flex flex-col">
-                <Header />
                 <Body initialMessages={messages}/>
                 <Form />
             </div>
