@@ -40,6 +40,10 @@ const ConversationList: FC<ConversationListProps> = ({
     return session.data?.user?.email;
   }, [session.data?.user?.email]);
 
+  const handleNewChat = () => {
+    router.push(`/conversations`);
+  }
+
   useEffect(() => {
     if (!pusherKey) {
       return;
@@ -114,7 +118,7 @@ const ConversationList: FC<ConversationListProps> = ({
               </div>
             </div>
             <button
-              onClick={() => router.push(`/conversations/${uuidv4()}`)}
+              onClick={ handleNewChat }
               className="
                     flex
                     items-center

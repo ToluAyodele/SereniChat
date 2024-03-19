@@ -1,15 +1,14 @@
-'use client';
-
 import useConversation from "../../../../app/hooks/useConversation";
 import MessageInput from "./MessageInput";
 
 import axios from "axios";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
-import React from "react";
+import React, { useEffect } from "react";
 
 
 const Form = () => {
     const { conversationId } = useConversation();
+
     const { 
         register, 
         handleSubmit, 
@@ -22,7 +21,7 @@ const Form = () => {
             message: ''
         }
     });
-
+    
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setValue('message', '', { shouldValidate: true });
 
