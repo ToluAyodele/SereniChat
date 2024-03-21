@@ -5,7 +5,7 @@ import MessageInput from "./MessageInput";
 
 import axios from "axios";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
-import React, { useState } from "react";
+import React from "react";
 
 const Form = () => {
     const { conversationId } = useConversation();
@@ -23,12 +23,28 @@ const Form = () => {
     });
     
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        setValue('message', '', { shouldValidate: true });
+            try {
+                setValue('message', '', { shouldValidate: true });
 
-        axios.post('/api/messages', {
-            ...data,
-            conversationId
-        })
+                axios.post('/api/messages', {
+                    ...data,
+                    conversationId,
+                    isUser: true
+                });
+
+                const sereniChatResponse = 'Hello! I am SereniChat, your virtual therapist.'
+
+                setTimeout(async () => {
+                    axios.post('/api/messages', {
+                        message: sereniChatResponse,
+                        conversationId,
+                        isUser: false
+                    })
+                }, 2000);
+
+        } catch (error) {
+            console.error('ERROR: ', error);
+        }
     };
 
     return (

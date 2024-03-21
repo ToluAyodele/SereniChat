@@ -38,21 +38,8 @@ const MessageInput: FC<MessageInputProps> = ({
         setHeight(`${scHeight}px`);
     };
 
-    // const handleSubmit = () => {
-    //     if (!user || !user.id) {
-    //         console.log('no user!');
-    //         return;
-    //     }
-
-    //     axios.post('/api/conversations', {
-    //         userId: user.id
-    //     }).then((resp) => {
-    //         router.push(`/conversation/${resp.data.id}`);
-    //     });
-    // };
-
     return (
-        <div className="relative flex w-1/2 px-16">
+        <div className="relative flex w-1/2 px-16 sm:min-w-350px">
             <textarea
                 id={id}
                 autoComplete={id}
@@ -73,10 +60,10 @@ const MessageInput: FC<MessageInputProps> = ({
                     overflow-y-hidden
                     resize-none
                     mx-16
+                    sm:min-w-[300px]
                 "
             />
             <button
-                // onClick={ handleSubmit }
                 type="submit"
                 className="
                     pr-3
@@ -88,7 +75,8 @@ const MessageInput: FC<MessageInputProps> = ({
                     w-12
                     top-0
                     bottom-0
-                    right-0"
+                    right-0
+                    "
                 style={{ marginRight: '135px' }}
             >
                     <HiArrowUp 

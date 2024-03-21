@@ -1,11 +1,10 @@
 'use client';
 
-import axios from 'axios';
 import { FullMessageType } from "../../../../app/types";
 import React, { FC, useEffect, useState, useRef } from "react";
-import { find } from 'lodash';
+// import { find } from 'lodash';
 
-import useConversation from "../../../../app/hooks/useConversation";
+// import useConversation from "../../../../app/hooks/useConversation";
 import MessageBox from "./MessageBox";
 
 
@@ -19,41 +18,40 @@ const Body: FC<BodyProps> = ({
     const [messages, setMessages] = useState(initialMessages);
     const bottomRef = useRef<HTMLDivElement>(null);
 
-    const { conversationId } = useConversation();
+    // const { conversationId } = useConversation();
 
-    useEffect(() => {
-        bottomRef?.current?.scrollIntoView();
+    // useEffect(() => {
+    //     bottomRef?.current?.scrollIntoView();
 
-        const messageHandler = (message: FullMessageType) => {
-            setMessages((prevMessages) => {
-                if (find(prevMessages, { id: message.id })) {
-                    return prevMessages;
-                }
-                return [...prevMessages, message];
-            });
+    //     const messageHandler = (message: FullMessageType) => {
+    //         setMessages((prevMessages) => {
+    //             if (find(prevMessages, { id: message.id })) {
+    //                 return prevMessages;
+    //             }
+    //             return [...prevMessages, message];
+    //         });
 
-            bottomRef?.current?.scrollIntoView();  
-        };
+    //         bottomRef?.current?.scrollIntoView();  
+    //     };
 
 
-        const updateMessageHandler = (newMessage: FullMessageType) => {
-            setMessages((current) =>
-                current.map((currentMessages) => {
-                    if(currentMessages.id === newMessage.id) {
-                        return newMessage;
-                    }
-                return currentMessages;
-            }));
-        };
-    }, [conversationId]);
+    //     const updateMessageHandler = (newMessage: FullMessageType) => {
+    //         setMessages((current) =>
+    //             current.map((currentMessages) => {
+    //                 if(currentMessages.id === newMessage.id) {
+    //                     return newMessage;
+    //                 }
+    //             return currentMessages;
+    //         }));
+    //     };
+    // }, [conversationId]);
 
     return (
-        <div className="px-4 py-10 sm:px-6 lg:px-8 h-full flex justify-center items-center w-full">
+        <div className="px-4 py-10 sm:px-6 lg:px-8 h-full flex justify-center items-center">
             <div className="text-center items-center flex flex-col w-1/2">
-                <div className="flex-1 overflow-y-auto">
+                <div className="flex-1">
                     { messages.map((message, i) => (
                         <MessageBox
-                            isLast={i === messages.length - 1}
                             key={message.id}
                             data={message}
                         />
