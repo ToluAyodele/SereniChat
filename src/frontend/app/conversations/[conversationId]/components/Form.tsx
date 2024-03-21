@@ -1,16 +1,16 @@
+'use client';
+
 import useConversation from "../../../../app/hooks/useConversation";
 import MessageInput from "./MessageInput";
 
 import axios from "axios";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
-import React, { useEffect } from "react";
-
+import React, { useState } from "react";
 
 const Form = () => {
     const { conversationId } = useConversation();
-
     const { 
-        register, 
+        register,
         handleSubmit, 
         setValue,
         formState: {
@@ -24,8 +24,6 @@ const Form = () => {
     
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setValue('message', '', { shouldValidate: true });
-
-        console.log(conversationId, 'convoID');
 
         axios.post('/api/messages', {
             ...data,
@@ -46,7 +44,7 @@ const Form = () => {
                     w-full
                     justify-center"
             >
-                <MessageInput 
+                <MessageInput
                     id='message'
                     register={register}
                     errors={errors}

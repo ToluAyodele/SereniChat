@@ -36,9 +36,9 @@ const ConversationBox: FC<ConversationBoxProps> = ({
 
 
     const lastMessageText = useMemo(() => {
-        if (lastMessage?.images) {
-            return 'Sent an image';
-        }
+        // if (lastMessage?.images) {
+        //     return 'Sent an image';
+        // }
 
         if (lastMessage?.body) {
             return lastMessage.body;
@@ -64,11 +64,10 @@ const ConversationBox: FC<ConversationBoxProps> = ({
             )}
             onClick={handleClick}
         >
-            { <Avatar user={otherUser} /> }
             <div className="min-w-0 flex-1 my-3">
                 <div className='flex justify-between items-center mb-1'>
                     <p className="text-md font-medium text-black">
-                        { data.name || otherUser.name }
+                        { data.name }
                     </p>
                     {lastMessage?.createdAt && (
                         <p className='text-md text-black font-light'>

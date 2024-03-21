@@ -16,7 +16,6 @@ const conversationId = async ({ params }: { params: IParams }) => {
     const conversation = await getConversationById(params.conversationId);
     const messages = await getMessages(params.conversationId);
 
-
     if (!conversation) {
         return (
             <div className="lg:pl-80 h-full">
@@ -28,9 +27,10 @@ const conversationId = async ({ params }: { params: IParams }) => {
     }
     
     return (
+
         <div className="lg:pl-80 h-full">
             <div className="h-full flex flex-col">
-                <Body initialMessages={messages}/>
+                <Body initialMessages={ messages } />
                 <Form />
             </div>
         </div>

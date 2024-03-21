@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import React, { FC, useEffect, useMemo, useState } from "react";
 import { find } from "lodash";
 import { FullConversationType } from "../../types";
@@ -41,7 +42,10 @@ const ConversationList: FC<ConversationListProps> = ({
   }, [session.data?.user?.email]);
 
   const handleNewChat = () => {
-    router.push(`/conversations`);
+    axios.post('/api/conversations', {
+    }).then((resp) => {
+      router.push(`/conversations/${resp.data.id}`);
+    })
   }
 
   useEffect(() => {

@@ -6,6 +6,8 @@ import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 import React, { FC, useState } from "react";
 import { HiArrowUp } from "react-icons/hi2";
 
+import { User } from "@prisma/client";
+
 interface MessageInputProps {
     placeholder?: string;
     id: string;

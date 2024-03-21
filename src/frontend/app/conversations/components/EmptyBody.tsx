@@ -2,7 +2,7 @@
 
 import React, { } from "react";
 
-import EmptyState from '../../../../app/components/EmptyState';
+import EmptyState from '../../components/EmptyState';
 
 const Body = () => {
     return (
