@@ -16,7 +16,7 @@ import { CldUploadButton } from 'next-cloudinary';
 interface SettingsModalProps {
     isOpen: boolean;
     onClose: () => void;
-    currentUser: User;
+    currentUser?: User;
 }
 
 const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose, currentUser }) => {

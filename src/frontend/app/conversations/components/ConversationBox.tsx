@@ -2,50 +2,38 @@
 
 import React, { useCallback, useMemo, FC } from 'react';
 import { useRouter } from 'next/navigation';
-import { Conversation, Message, User } from '@prisma/client';
-import { format } from 'date-fns';
-import { useSession } from 'next-auth/react';
 import clsx from 'clsx';
 
 import { FullConversationType } from '../../types';
-import useOtherUser from '../../hooks/useOtherUser';
-import Avatar from '../../components/desktop-view/Avatar';
+import getConversationById from '@/app/actions/getConversationById';
 
 interface ConversationBoxProps {
     data: FullConversationType,
-    selected?: boolean;
 }
 
 const ConversationBox: FC<ConversationBoxProps> = ({
     data,
-    selected
 }) => {
-    const otherUser = useOtherUser(data);
-    const session = useSession();
     const router = useRouter();
 
     const handleClick = useCallback(() => {
         router.push(`/conversations/${data.id}`);
     }, [data.id, router]);
 
-    const lastMessage = useMemo(() => {
+    const firstMessage = useMemo(() => {
         const messages = data.messages || [];
 
-        return messages[messages.length - 1];
+        return messages[0];
     }, [data.messages]);
 
 
-    const lastMessageText = useMemo(() => {
-        // if (lastMessage?.images) {
-        //     return 'Sent an image';
-        // }
-
-        if (lastMessage?.body) {
-            return lastMessage.body;
+    const firstMessageText = useMemo(() => {
+        if (firstMessage?.body) {
+            return firstMessage.body;
         }
 
         return 'Started a conversation';
-    }, [lastMessage]);
+    }, [firstMessage]);
 
     return (
         <div 
@@ -62,25 +50,15 @@ const ConversationBox: FC<ConversationBoxProps> = ({
                 px-5
             `, 'bg-teal-600'
             )}
-            onClick={handleClick}
+            onClick={ handleClick }
         >
-            <div className="min-w-0 flex-1 my-3">
-                <div className='flex justify-between items-center mb-1'>
-                    <p className="text-md font-medium text-black">
-                        { data.name }
-                    </p>
-                    {lastMessage?.createdAt && (
-                        <p className='text-md text-black font-light'>
-                            {format(new Date(lastMessage.createdAt), 'p')}
-                        </p>
-                    )}
-                </div>
+            <div className="min-w-0 justify-between flex flex-1 my-3">
                 <p className={clsx(`
                     truncate
                     text-md
                 `, 'text-black font-medium'
                 )}>
-                    {lastMessageText}
+                    { firstMessageText }
                 </p>
             </div>
         </div>

@@ -22,26 +22,25 @@ const Form = () => {
         }
     });
     
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-            try {
-                setValue('message', '', { shouldValidate: true });
-
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        try {
+            setValue('message', '', { shouldValidate: true });
+            
+            // Temporary response to simulate SereniChat's response
+            const [sendMessageResponse, sendSereniChatResponse] = await Promise.all([
                 axios.post('/api/messages', {
                     ...data,
                     conversationId,
                     isUser: true
-                });
-
-                const sereniChatResponse = 'Hello! I am SereniChat, your virtual therapist.'
-
-                setTimeout(async () => {
+                }),
+                setTimeout(() => {
                     axios.post('/api/messages', {
-                        message: sereniChatResponse,
+                        message: 'Hello! I am SereniChat, your virtual therapist.',
                         conversationId,
                         isUser: false
                     })
-                }, 2000);
-
+                }, 3000)
+            ]);
         } catch (error) {
             console.error('ERROR: ', error);
         }

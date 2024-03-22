@@ -1,117 +1,90 @@
 "use client";
 
 import axios from "axios";
-import React, { FC, useEffect, useMemo, useState } from "react";
-import { find } from "lodash";
+import React, { FC, useState } from "react";
 import { FullConversationType } from "../../types";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
-import useConversation from "../../hooks/useConversation";
-import { useSession } from "next-auth/react";
-
+import { HiMiniTrash } from "react-icons/hi2";
 import ConversationBox from "./ConversationBox";
 import { User } from "@prisma/client";
-
-// new imports added
 import Avatar from "../../components/desktop-view/Avatar";
 import DesktopItem from "../../components/desktop-view/DesktopItem";
 import { HiOutlinePlusCircle, HiEllipsisHorizontal, HiArrowLeftOnRectangle } from "react-icons/hi2";
 import { signOut } from 'next-auth/react';
-import { v4 as uuidv4 } from 'uuid';
-// import ProfileDrawer from '../[conversationId]/components/ProfileDrawer'; // for the ellipsis menu
+import toast from 'react-hot-toast';
+import SettingsModal from "../../components/modals/SettingsModal";
 
 interface ConversationListProps {
   initialItems: FullConversationType[];
-  users: User[];
+  user?: User;
 }
 
 const ConversationList: FC<ConversationListProps> = ({
   initialItems,
-  users,
+  user,
 }) => {
-  const session = useSession();
   const [items, setItems] = useState(initialItems);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
+  
   const router = useRouter();
-
-  const { isOpen, conversationId } = useConversation();
-
-  const pusherKey = useMemo(() => {
-    return session.data?.user?.email;
-  }, [session.data?.user?.email]);
 
   const handleNewChat = () => {
     axios.post('/api/conversations', {
     }).then((resp) => {
       router.push(`/conversations/${resp.data.id}`);
+
+      setItems((current) => {
+        return [resp.data, ...current];
+      })
     })
   }
 
-  useEffect(() => {
-    if (!pusherKey) {
-      return;
-    }
-
-    const newHandler = (conversation: FullConversationType) => {
-      setItems((current) => {
-        if (find(current, { id: conversation.id })) {
-          return current;
+  const deleteConversation = (conversationId: string) => {
+    axios.delete(`/api/conversations/${conversationId}`, {
+        data: {
+            conversationId: conversationId
         }
+    })
+    .then(() => {
+        router.push('/conversations');
+        toast.success('Conversation deleted successfully!');
 
-        return [conversation, ...current];
-      });
-    };
-
-    const updateHandler = (conversation: FullConversationType) => {
-      setItems((current) =>
-        current.map((currentConversation) => {
-          if (currentConversation.id === conversation.id) {
-            return {
-              ...currentConversation,
-              messages: conversation.messages,
-            };
-          }
-          return currentConversation;
+        setItems((current) => {
+          return current.filter((item) => 
+            item.id !== conversationId)
         })
-      );
-    };
-
-    const removeHandler = (conversation: FullConversationType) => {
-      setItems((current) => {
-        return [...current.filter((convo) => convo.id !== conversation.id)];
-      });
-
-      if (conversationId === conversation.id) {
-        router.push("/conversations");
-      }
-    };
-
-  }, [pusherKey]);
+    })
+    .catch(() => toast.error('Something went wrong!'))
+}
 
   return (
     <>
-      <aside
-        className={clsx(
-          `
-                    fixed
-                    inset-y-0
-                    pb-20
-                    lg:pb-0
-                    lg:w-96
-                    lg:block
-                    overflow-y-auto
-                    border-none
-                    bg-teal-600
-                `,
-          isOpen ? "hidden" : "block w-full left-0"
-        )}
-      >
+    <SettingsModal
+      isOpen={drawerOpen}
+      onClose={() => setDrawerOpen(false)}
+      currentUser={user}
+    />
+    <aside
+      className={clsx(
+        `
+          fixed
+          inset-y-0
+          pb-20
+          lg:pb-0
+          lg:w-96
+          lg:block
+          overflow-y-auto
+          border-none
+          bg-teal-600
+        block w-full left-0`
+      )}
+    >
         <div className="flex flex-col justify-between min-h-screen">
           <div className="px-5">
             <div className="flex justify-between mb-4 pt-4">
               <nav className="mt-4 px-4 cursor-pointer hover:opacity-75 transition">
-                <Avatar />
+                <Avatar user={user}/>
               </nav>
               <div className="py-5">
                 <HiEllipsisHorizontal
@@ -144,13 +117,19 @@ const ConversationList: FC<ConversationListProps> = ({
               </div>
               <span className="mr-8">New Chat</span>
             </button>
-            {items.map((item) => (
-              <ConversationBox
-                key={item.id}
-                data={item}
-                selected={conversationId === item.id}
-              />
-            ))}
+            { items.map((item) => (
+              <div key={item.id} className="flex items-center text-xl">
+                <ConversationBox
+                  data={item}
+                />
+                <HiMiniTrash
+                  size={28}
+                  className="text-black hover:text-teal-200 transition cursor-pointer"
+                  onClick={ () => deleteConversation(item.id) }
+                />
+              </div>
+          ))}
+
           </div>
           <div className="mt-auto">
             <div className="text-2xl font-bold list-none">

@@ -2,17 +2,19 @@ import React, { ReactNode } from 'react';
 
 import ConversationList from './components/ConversationList';
 import getConversations from '../actions/getConversations';
-import getUsers from '../actions/getUsers';
+import getCurrentUser from '../actions/getCurrentUser';
+import { User } from '@prisma/client';
 
 export default async function ConversationsLayout({ children }: { children: ReactNode }) {
 
     const conversations = await getConversations();
-    const users = await getUsers();
+    const currentUser = await getCurrentUser();
+
 
     return (
         <div className="h-full">
             <ConversationList
-                users={users}
+                user={currentUser as User}
                 initialItems={ conversations }
             />
             { children }
