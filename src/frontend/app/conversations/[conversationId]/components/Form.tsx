@@ -25,13 +25,20 @@ const Form = () => {
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         try {
             setValue('message', '', { shouldValidate: true });
-            
+
+            const sentimentAnalysisResponse = await axios.post('/api/sentiment-analysis', {
+                inputs: data.message
+            })
+
+            const sentiment = sentimentAnalysisResponse.data;
+
             // Temporary response to simulate SereniChat's response
             const [sendMessageResponse, sendSereniChatResponse] = await Promise.all([
                 axios.post('/api/messages', {
                     ...data,
+                    sentiment,
                     conversationId,
-                    isUser: true
+                    isUser: true,
                 }),
                 setTimeout(() => {
                     axios.post('/api/messages', {

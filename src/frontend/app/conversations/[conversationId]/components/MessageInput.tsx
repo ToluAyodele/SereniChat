@@ -43,7 +43,7 @@ const MessageInput: FC<MessageInputProps> = ({
             <textarea
                 id={id}
                 autoComplete={id}
-                { ...register(id, { required: true, minLength: 4 } )}
+                { ...register(id, { required: true, minLength: 1 } )}
                 placeholder={ placeholder }
                 onChange={ handleTextChange }
                 className="
