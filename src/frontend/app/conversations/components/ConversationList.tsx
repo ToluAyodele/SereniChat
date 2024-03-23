@@ -84,7 +84,9 @@ const ConversationList: FC<ConversationListProps> = ({
           <div className="px-5">
             <div className="flex justify-between mb-4 pt-4">
               <nav className="mt-4 px-4 cursor-pointer hover:opacity-75 transition">
-                <Avatar user={user}/>
+                <Avatar 
+                  user={ user }
+                />
               </nav>
               <div className="py-5">
                 <HiEllipsisHorizontal

@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
 
 import { FullConversationType } from '../../types';
-import getConversationById from '@/app/actions/getConversationById';
 
 interface ConversationBoxProps {
     data: FullConversationType,
