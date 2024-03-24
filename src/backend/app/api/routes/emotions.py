@@ -6,10 +6,11 @@ from models import Emotions
 router = APIRouter()
 
 @router.post('/', response_model=list[str])
-def get_emotion_synonyms(emotion: str) -> list[str]:
+def get_emotion_synonyms(emotion: dict[str, str]) -> list[str]:
     """
     Retrieve synonyms for a given emotion.
     """
+    emotion = emotion.get('sentiment')
     if mysql_cnx and mysql_cnx.is_connected():
         cursor = mysql_cnx.cursor()
         query = (
