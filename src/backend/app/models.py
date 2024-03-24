@@ -35,3 +35,16 @@ class Locations(SQLModel, table=True):
     state: str = Field(max_length=100)
     zip: str = Field(max_length=20)
     org_id: int = Field(foreign_key='orgs.org_id')
+
+class Emotions(SQLModel, table=True):
+    """
+    Represents synonyms for a set amount of emotions.
+    
+    Attributes:
+        emotion_id (int): The unique identifier for a synonym that matches to an emotion.
+        word (str): The emotion.
+        synonym (str): Synonym of a word.
+    """
+    emotion_id: int = Field(default=None, primary_key=True)
+    word: str = Field(max_length=255, unique=True)
+    synonym: str

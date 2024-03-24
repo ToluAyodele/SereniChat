@@ -32,8 +32,12 @@ const Form = () => {
 
             const sentiment = sentimentAnalysisResponse.data;
 
+            /* - send the system message, user message, prev gpt response as a request to the api
+                - the prev gpt response will be optional just incase it is a new conversation
+            */
+
             // Temporary response to simulate SereniChat's response
-            const [sendMessageResponse, sendSereniChatResponse] = await Promise.all([
+            await Promise.all([
                 axios.post('/api/messages', {
                     ...data,
                     sentiment,

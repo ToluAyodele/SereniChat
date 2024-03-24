@@ -1,3 +1,5 @@
+import mysql.connector
+
 from core.config import settings
 
 db_config = {
@@ -7,3 +9,5 @@ db_config = {
     'database': settings.MYSQL_DB,
     'raise_on_warnings': True
 }
+
+mysql_cnx = mysql.connector.connect(**db_config)
