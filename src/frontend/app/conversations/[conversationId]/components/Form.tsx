@@ -26,11 +26,9 @@ const Form = () => {
         try {
             setValue('message', '', { shouldValidate: true });
 
-            const sentimentAnalysisResponse = await axios.post('/api/sentiment-analysis', {
-                inputs: data.message
-            })
-
+            const sentimentAnalysisResponse = await axios.post('/api/sentiment-analysis', { inputs: data.message })
             const sentiment = sentimentAnalysisResponse.data;
+            const synonyms = await axios.post('http://127.0.0.1:8000/synonyms/', { sentiment });
 
             /* - send the system message, user message, prev gpt response as a request to the api
                 - the prev gpt response will be optional just incase it is a new conversation
