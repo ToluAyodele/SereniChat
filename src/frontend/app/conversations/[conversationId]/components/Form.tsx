@@ -1,13 +1,15 @@
 'use client';
 
+import { sereniChatPrompt } from '../prompt';
 import useConversation from "../../../../app/hooks/useConversation";
 import MessageInput from "./MessageInput";
 
 import axios from "axios";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
-import React from "react";
+import React, { useState } from "react";
 
 const Form = () => {
+    const [lastMessage, setLastMessage] = useState('This is the first message of the conversation.');
     const { conversationId } = useConversation();
     const { 
         register,
@@ -28,13 +30,18 @@ const Form = () => {
 
             const sentimentAnalysisResponse = await axios.post('/api/sentiment-analysis', { inputs: data.message })
             const sentiment = sentimentAnalysisResponse.data;
+
+            console.log(sentiment);
             const synonyms = await axios.post('http://127.0.0.1:8000/synonyms/', { sentiment });
 
-            /* - send the system message, user message, prev gpt response as a request to the api
-                - the prev gpt response will be optional just incase it is a new conversation
-            */
+            const sereniChatResponse = await axios.post('/api/sereni-chat', {
+                system: `${sereniChatPrompt}\n${synonyms.data.join(' ')}`,
+                user: data.message,
+                assistant: lastMessage
+            });
 
-            // Temporary response to simulate SereniChat's response
+            console.log(lastMessage);
+
             await Promise.all([
                 axios.post('/api/messages', {
                     ...data,
@@ -44,11 +51,13 @@ const Form = () => {
                 }),
                 setTimeout(() => {
                     axios.post('/api/messages', {
-                        message: 'Hello! I am SereniChat, your virtual therapist.',
+                        message: sereniChatResponse.data,
                         conversationId,
                         isUser: false
-                    })
-                }, 3000)
+                    });
+                }, 2500),
+
+                
             ]);
         } catch (error) {
             console.error('ERROR: ', error);
