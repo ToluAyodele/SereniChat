@@ -14,8 +14,8 @@ const MessageBox: FC<MessageBoxProps> = ({
     data,
 }) => {
 
-    const container = clsx("flex gap-3 p-4");
-    const body = clsx("flex flex-col gap-2");
+    const container = clsx("flex gap-5 p-6 justify-center");
+    const body = clsx("flex flex-col gap-2 w-3/5");
 
     return (
         <>
@@ -26,7 +26,7 @@ const MessageBox: FC<MessageBoxProps> = ({
                     <div className={body}>
                         <div className="flex items-center gap-1">
                             <div className="text-md text-black font-bold">
-                                You
+                                { data.sender.name }
                             </div>
                         </div>
                         <div className="text-xl text-left">

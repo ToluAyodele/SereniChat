@@ -29,19 +29,19 @@ const Form = () => {
 
     // Hugging Face API needs to be preloaded to avoid a cold start with the inference API
     // This is a workaround to avoid the cold start
-    useEffect(() => {
-        if (!isPreloaded) {
-            const preloadSentimentApi = async () => {
-                try {
-                    await axios.post('/api/sentiment-analysis', { inputs: 'sadness' });
-                    setIsPreloaded(true);
-                } catch (error) {
-                    console.error('ERROR: ', error);
-                }
-            };
-            preloadSentimentApi();
-        }
-    })
+    // useEffect(() => {
+    //     if (!isPreloaded) {
+    //         const preloadSentimentApi = async () => {
+    //             try {
+    //                 await axios.post('/api/sentiment-analysis', { inputs: 'sadness' });
+    //                 setIsPreloaded(true);
+    //             } catch (error) {
+    //                 console.error('ERROR: ', error);
+    //             }
+    //         };
+    //         preloadSentimentApi();
+    //     }
+    // })
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         try {
@@ -65,15 +65,15 @@ const Form = () => {
             setLastMessage(sereniResponse as string);
             
             // saves the user message then the sereni chat response
-            axios.post('/api/messages', {
+            await axios.post('/api/messages', {
                 ...data,
                 sentiment,
                 conversationId,
                 isUser: true,
             });
 
-            axios.post('/api/messages', {
-                message: sereniChatResponse,
+            await axios.post('/api/messages', {
+                message: sereniChatResponse.data,
                 conversationId,
                 isUser: false
             });
@@ -83,7 +83,7 @@ const Form = () => {
     };
 
     return (
-        <div className="mb-12 px-4 ng-white border-none flex items-center gap-2 lg:gap-4 w-full">
+        <div className="border-none items-center gap-2 lg:gap-4">
             <form 
                 action="POST"
                 onSubmit={ handleSubmit(onSubmit) }

@@ -25,59 +25,58 @@ const MessageInput: FC<MessageInputProps> = ({
     register,
     errors
 }) => {
-    const [height, setHeight] = useState('auto');
+    const [textAreaHeight, setTextAreaHeight] = useState('16px');
     const router = useRouter();
 
 
     const handleTextChange = (e) => {
         const textarea = e.target;
-        textarea.style.height = '16px';
+        textarea.style.height = textAreaHeight;
         
         const scHeight = textarea.scrollHeight;
         textarea.style.height = `${scHeight}px`;
-        setHeight(`${scHeight}px`);
+        setTextAreaHeight(`${scHeight}px`);
+
+        const dynamicDiv = document.getElementById('dynamic-div') as HTMLElement;
+        if (dynamicDiv) {
+            dynamicDiv.style.height = `${scHeight + 20}px`;
+        }
     };
 
     return (
-        <div className="relative flex w-1/2 px-16 sm:min-w-350px">
-            <textarea
-                id={id}
-                autoComplete={id}
-                { ...register(id, { required: true, minLength: 1 } )}
-                placeholder={ placeholder }
-                onChange={ handleTextChange }
-                className="
-                    text-black
-                    placeholder-black
-                    text-lg
-                    bg-neutral-300
-                    w-full
-                    rounded-lg
-                    focus:outline-none
-                    p-4
-                    max-h-64
-                    h-16
-                    overflow-y-hidden
-                    resize-none
-                    mx-16
-                    sm:min-w-[300px]
-                "
-            />
-            <button
-                type="submit"
-                className="
-                    pr-3
-                    pt-3
-                    cursor-pointer
-                    transition
-                    absolute
-                    h-12
-                    w-12
-                    top-0
-                    bottom-0
-                    right-0
-                    "
-                style={{ marginRight: '135px' }}
+        <>
+            <div id="dynamic-div" className="h-24 fixed flex w-1/2 lg:w-1/2 xl:w-1/2 bottom-0 justify-center"
+
+            >
+                <div className="w-full lg:w-full xl:w-1/2 mr-5 bg-white">
+                    <textarea
+                        id={id}
+                        autoComplete={id}
+                        { ...register(id, { required: true, minLength: 1 } )}
+                        placeholder={ placeholder }
+                        onChange={ handleTextChange }
+                        className="
+                            text-black
+                            placeholder-black
+                            text-lg
+                            bg-neutral-300
+                            w-full
+                            rounded-lg
+                            focus:outline-none
+                            p-4
+                            max-h-64
+                            h-16
+                            resize-none
+                        "
+                    />
+                </div>
+                <button
+                    type="submit"
+                    className="
+                        cursor-pointer
+                        transition
+                        bg-white
+                        "
             >
                     <HiArrowUp 
                         size={36}
@@ -89,10 +88,12 @@ const MessageInput: FC<MessageInputProps> = ({
                             border-black
                             p-1
                             mr-2
+                            mb-8
                         " 
                     />
                 </button>
-        </div>
+            </div>
+        </>
     );
 }
 
