@@ -21,14 +21,13 @@ const ConversationBox: FC<ConversationBoxProps> = ({
 
     const firstMessage = useMemo(() => {
         const messages = data.messages || [];
-
         return messages[0];
     }, [data.messages]);
 
 
     const firstMessageText = useMemo(() => {
         if (firstMessage?.body) {
-            return firstMessage.body;
+            return firstMessage.body.slice(0, 28) + '...';
         }
 
         return 'Started a conversation';

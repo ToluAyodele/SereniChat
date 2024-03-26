@@ -12,7 +12,6 @@ import React, { useEffect, useState } from "react";
 const Form = () => {
     const { conversationId } = useConversation();
     const [isPreloaded, setIsPreloaded] = useState(false);
-    const [sereniResponse, setSereniResponse] = useState('');
     const [lastMessage, setLastMessage] = useState('This is the first message of the conversation.');
     const { 
         register,
@@ -60,9 +59,6 @@ const Form = () => {
                 user: data.message,
                 assistant: lastMessage
             });
-
-            setSereniResponse(sereniChatResponse.data);
-            setLastMessage(sereniResponse as string);
             
             // saves the user message then the sereni chat response
             await axios.post('/api/messages', {
@@ -77,6 +73,9 @@ const Form = () => {
                 conversationId,
                 isUser: false
             });
+
+            setLastMessage(sereniChatResponse.data);
+
         } catch (error) {
             console.error('ERROR: ', error);
         }
