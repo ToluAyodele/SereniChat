@@ -58,7 +58,7 @@ const Body: FC<BodyProps> = ({
 
     return (
         <div className="flex justify-center items-center h-full">
-            <div className="text-center items-center flex flex-col w-1/2">
+            <div className="text-center items-center flex flex-col w-3/5">
                 <div className="flex-1 mt-8">
                     { messages.map((message, i) => (
                         <MessageBox

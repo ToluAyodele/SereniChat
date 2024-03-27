@@ -6,6 +6,8 @@ import { FullMessageType } from '../../../../app/types';
 
 import Avatar from '../../../../app/components/desktop-view/Avatar';
 
+import ReactMarkdown from 'react-markdown';
+
 interface MessageBoxProps {
     data: FullMessageType;
 }
@@ -30,7 +32,7 @@ const MessageBox: FC<MessageBoxProps> = ({
                             </div>
                         </div>
                         <div className="text-xl text-left">
-                            { data.body }
+                                <ReactMarkdown children={ data.body }/>
                         </div>
                     </div>
                 </div>
@@ -46,7 +48,7 @@ const MessageBox: FC<MessageBoxProps> = ({
                             </div>
                         </div> 
                         <div className="text-xl text-left">
-                            { data.body }
+                            <ReactMarkdown children={ data.body }/>
                         </div>
                     </div>
                 </div>
