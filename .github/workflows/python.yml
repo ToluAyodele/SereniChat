@@ -1,0 +1,28 @@
+name: Python Setup
+
+run-name: "${{ contains(github.head_ref, 'feature/') && 'Feature' || contains(github.head_ref, 'bugfix/') && 'Bugfix' || 'Update' }}: ${{ github.head_ref }} by @${{ github.actor }}"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy: 
+      matrix:
+        python-version: ["pypy3.9", "pypy3.10", "3.9", "3.10", "3.11", "3.12"]
+    steps:
+      - name: Python Setup ${{ matrix.python-version }}
+        uses: actions/checkout@v4
+      - run: |
+          if [ ! -d ./SereniChat/src/backend/venv ]; then
+            python3 -m venv ./src/backend/venv
+          fi
+          source ./src/backend/venv/bin/activate
+          pip install -r ./src/backend/requirements.txt
+          pip freeze > ./src/backend/requirements.txt
