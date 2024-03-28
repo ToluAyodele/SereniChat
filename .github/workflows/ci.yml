@@ -1,0 +1,34 @@
+name: Integration CI
+
+run-name: "${{ contains(github.head_ref, 'feature/') && 'Feature' || contains(github.head_ref, 'bugfix/') && 'Bugfix' || 'Update' }}: ${{ github.head_ref }} by @${{ github.actor }}"
+
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js & Python
+        run: |
+          npm install
+
+          if [ ! -d venv ]; then
+            python3 -m venv venv
+          fi
+          source venv/bin/activate
+          
+          pip install -r requirements.txt
+          pip freeze > requirements.txt
+
+      - name: Build Next.js app
+        run: npm run build
+
+      - name: Run linting
+        run: npm run lint
