@@ -19,9 +19,6 @@ jobs:
     steps:
       - name: Python Setup ${{ matrix.python-version }}
         uses: actions/checkout@v4
-        with:
-          python-version: '3.9+'
-          cache: 'pip'
       - run: |
           if [ ! -d ./SereniChat/src/backend/venv ]; then
             python3 -m venv ./src/backend/venv
