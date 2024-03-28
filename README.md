@@ -1,4 +1,4 @@
-## Set up ENV file
+## Setup ENV file for the frontend
 
 ```js
 DATABASE_URL
@@ -14,33 +14,26 @@ NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
 NEXT_PUBLIC_PUSHER_APP_KEY
 PUSHER_APP_ID
 PUSHER_APP_SECRET
+
+HUGGINGFACE_API_KEY
+
+OPENAI_API_KEY
 ```
 
-## Install Dependencies
-### Frontend
-```shell
-cd src/frontend
-npm install
-```
-### Backend
-```shell
-pip install requirements.txt
-```
+## Setup ENV file for the backend
+```python
+DOMAIN
+SERVER_HOST
 
-## Resolving Prisma Client Error (May run into this issue)
-```shell
-cd src/frontend
-npx prisma generate
-```
-- a node_modules duplicate will be created with a .prisma/client path
-- copy the client directory from the new node_modules and replace the old client directory in the old node_modules
-- delete the new node_modules folder
+PROJECT_NAME
 
-## Setup MongoDB using Prisma (if you create your own mongodb collections)
-```shell
-npx prisma db push
-```
-## Start the app
-```shell
-npm run dev
+# Backend
+CORS_ORIGINS
+
+# MySQL
+MYSQL_SERVER
+MYSQL_USER
+MYSQL_PASSWORD
+MYSQL_PORT
+MYSQL_DB
 ```
