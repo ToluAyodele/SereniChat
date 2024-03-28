@@ -28,7 +28,7 @@ jobs:
           pip freeze > requirements.txt
 
       - name: Build Next.js app
-        run: npm run build
+        run: npm run build --prefix /home/runner/work/SereniChat/src/frontend/package.json
 
       - name: Run linting
         run: npm run lint
