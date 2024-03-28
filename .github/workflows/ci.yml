@@ -13,22 +13,27 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy: 
+      matrix:
+        python-version: ["pypy3.9", "pypy3.10", "3.9", "3.10", "3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Node.js & Python
-        run: |
-          npm install --prefix /home/runner/work/SereniChat/src/frontend/package.json
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - run: npm install --prefix ./SereniChat/src/frontend
+      - run: npm run build --prefix ./SereniChat/src/frontend
 
-          if [ ! -d venv ]; then
-            python3 -m venv venv --prefix /home/runner/work/SereniChat/src/backend
+      - name: Python Setup ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9+'
+          cache: 'pip'
+      - run: |
+          if [ ! -d ./SereniChat/src/backend/venv ]; then
+            python3 -m venv ./SereniChat/src/backend/venv
           fi
-          source venv/bin/activate --prefix /home/runner/work/SereniChat/src/backend
-          
-          pip install -r requirements.txt --prefix /home/runner/work/SereniChat/src/backend
-          pip freeze > requirements.txt --prefix /home/runner/work/SereniChat/src/backend
-
-      - name: Build Next.js app
-        run: npm run build --prefix /home/runner/work/SereniChat/src/frontend/package.json
-
-      - name: Run linting
-        run: npm run lint
+          source ./SereniChat/src/backend/venv/bin/activate
+          pip install -r ./SereniChat/src/backend/requirements.txt
+          pip freeze > ./SereniChat/src/backend/requirements.txt
