@@ -16,7 +16,7 @@ const Avatar: FC<AvatarProps> = ({
             <div className="relative inline-block rounded-lg overflow-hidden h-9 w-9 md:h-11 md:w-11">
                 <Image 
                     alt="avatar" 
-                    src={ user?.image || '/images/placeholder.jpeg' }
+                    src={ user?.image || "/images/logo.png" }
                     fill
                 />
             </div>
