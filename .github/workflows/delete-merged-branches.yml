@@ -26,9 +26,6 @@ jobs:
         - name: Pull Changes
           run: git pull origin ${GITHUB_REF#refs/heads/}
 
-        - name: Push Changes
-          run: git push origin ${GITHUB_REF#refs/heads/}
-
         - name: Delete Merged Branch
           if: steps.check-pr.outputs.is_pull_request == 'true'
           run: |
