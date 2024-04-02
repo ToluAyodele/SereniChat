@@ -49,4 +49,4 @@ jobs:
           cd $GITHUB_WORKSPACE
           cd ./src/backend
           source venv/bin/activate
-          pip install -r ./src/backend/requirements.txt
+          pip install -r requirements.txt
