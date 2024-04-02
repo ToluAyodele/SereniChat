@@ -21,6 +21,7 @@ OPENAI_API_KEY
 ```
 
 ## Setup ENV file for the backend
+
 ```python
 DOMAIN
 SERVER_HOST
@@ -37,3 +38,8 @@ MYSQL_PASSWORD
 MYSQL_PORT
 MYSQL_DB
 ```
+
+cd into back end
+source venv/vim activate
+cd into app
+uvicorn main:app
