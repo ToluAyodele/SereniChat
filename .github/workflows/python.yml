@@ -25,9 +25,9 @@ jobs:
         id: check-venv
         run: |
           if [ -d "./src/backend/venv" ]; then
-            echo "::set-output name=venv_exists::true"
+            echo "venv_exists=true" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=venv_exists::false"
+            echo "venv_exists=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Create Virtual Environment

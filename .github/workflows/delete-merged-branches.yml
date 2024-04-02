@@ -1,4 +1,4 @@
-name: Delete Merged Branches
+name: Post-Merge Workflow
 
 on:
   push:
@@ -18,6 +18,16 @@ jobs:
     steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
+
+        - name: Post-Merge Steps
+          run: |
+            echo "Performing post-merge steps..."
+
+        - name: Pull Changes
+          run: git pull origin ${GITHUB_REF#refs/heads/}
+
+        - name: Push Changes
+          run: git push origin ${GITHUB_REF#refs/heads/}
 
         - name: Delete Merged Branch
           if: steps.check-pr.outputs.is_pull_request == 'true'
