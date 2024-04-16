@@ -24,7 +24,10 @@ const MessageBox: FC<MessageBoxProps> = ({
             { data.sender ? (
             <>
                 <div className={container}>
-                    <Avatar user={ data.sender } />
+                    <Avatar 
+                        user={ data.sender }
+                        logo={ '/images/default-logo.png' }
+                    />
                     <div className={body}>
                         <div className="flex items-center gap-1">
                             <div className="text-md text-black font-bold">
@@ -40,7 +43,7 @@ const MessageBox: FC<MessageBoxProps> = ({
             ) : (
             <>
                 <div className={container}>
-                    <Avatar />
+                    <Avatar logo='/images/logo.png'/>
                     <div className={body}>
                         <div className="flex items-center gap-1">
                             <div className="text-md text-black font-bold">

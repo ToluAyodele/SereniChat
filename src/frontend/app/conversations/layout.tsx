@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import ConversationList from './components/ConversationList';
-import getConversations from '../actions/getConversations';
-import getCurrentUser from '../actions/getCurrentUser';
 import { User } from '@prisma/client';
+
+import getCurrentUser from '../actions/getCurrentUser';
+import getConversations from '../actions/getConversations';
+import ConversationList from './components/ConversationList';
 
 export default async function ConversationsLayout({ children }: { children: ReactNode }) {
 

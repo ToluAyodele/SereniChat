@@ -27,7 +27,7 @@ const ConversationBox: FC<ConversationBoxProps> = ({
 
     const firstMessageText = useMemo(() => {
         if (firstMessage?.body) {
-            return firstMessage.body.slice(0, 28) + '...';
+            return firstMessage.body.slice(0, 20) + '...';
         }
 
         return 'Started a conversation';

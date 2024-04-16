@@ -1,19 +1,23 @@
 "use client";
 
-import axios from "axios";
 import React, { FC, useState } from "react";
-import { FullConversationType } from "../../types";
-import { useRouter } from "next/navigation";
+
 import clsx from "clsx";
-import { HiMiniTrash } from "react-icons/hi2";
-import ConversationBox from "./ConversationBox";
-import { User } from "@prisma/client";
-import Avatar from "../../components/desktop-view/Avatar";
-import DesktopItem from "../../components/desktop-view/DesktopItem";
-import { HiOutlinePlusCircle, HiEllipsisHorizontal, HiArrowLeftOnRectangle } from "react-icons/hi2";
-import { signOut } from 'next-auth/react';
+import axios from "axios";
 import toast from 'react-hot-toast';
+
+import { User } from "@prisma/client";
+import { signOut } from 'next-auth/react';
+import { useRouter } from "next/navigation";
+import { HiMiniTrash } from "react-icons/hi2";
+import { HiArrowLeftOnRectangle, HiEllipsisHorizontal, HiOutlinePlusCircle } from "react-icons/hi2";
+
+import ConversationBox from "./ConversationBox";
+import { FullConversationType } from "../../types";
+import Avatar from "../../components/desktop-view/Avatar";
 import SettingsModal from "../../components/modals/SettingsModal";
+import DesktopItem from "../../components/desktop-view/DesktopItem";
+import MobileConversations from "../../components/mobile-view/MobileConversations";
 
 interface ConversationListProps {
   initialItems: FullConversationType[];
@@ -60,32 +64,38 @@ const ConversationList: FC<ConversationListProps> = ({
 
   return (
     <>
-    <SettingsModal
-      isOpen={drawerOpen}
-      onClose={() => setDrawerOpen(false)}
-      currentUser={user}
-    />
-    <aside
-      className={clsx(
-        `
-          fixed
-          inset-y-0
-          pb-20
-          lg:pb-0
-          lg:w-96
-          lg:block
-          overflow-y-auto
-          border-none
-          bg-teal-600
-        block w-full left-0`
-      )}
-    >
+      <SettingsModal
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        currentUser={user}
+      />
+      <MobileConversations />
+      <aside
+        className={clsx(
+          `
+            fixed
+            inset-y-0
+            pb-20
+            lg:pb-0
+            lg:w-96
+            lg:block
+            overflow-y-auto
+            border-none
+            bg-blue-600
+            w-full
+            left-0
+            hidden
+          `,
+          `sm:hidden`
+        )}
+      >
         <div className="flex flex-col justify-between min-h-screen">
           <div className="px-5">
             <div className="flex justify-between mb-4 pt-4">
               <nav className="mt-4 px-4 cursor-pointer hover:opacity-75 transition">
                 <Avatar 
                   user={ user }
+                  logo={ '/images/default-logo.png' }
                 />
               </nav>
               <div className="py-5">
