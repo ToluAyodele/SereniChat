@@ -8,9 +8,10 @@ interface ModalProps {
   isOpen?: boolean;
   onClose: () => void;
   children: ReactNode;
+  modalHeight?: string;
 }
 
-const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const Modal: FC<ModalProps> = ({ isOpen, onClose, children, modalHeight }) => {
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
@@ -38,22 +39,23 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
             >
               <Dialog.Panel
                 className="
-                relative 
-                transform 
-                overflow-hidden 
-                rounded-lg 
-                bg-white 
-                px-4 
-                pb-4
-                pt-5 
-                text-left 
-                shadow-xl 
-                transition-all
-                w-full
-                sm:my-8 
-                sm:w-full 
-                sm:max-w-lg 
-                sm:p-6"
+                  relative 
+                  transform 
+                  overflow-hidden 
+                  rounded-lg 
+                  bg-white
+                  px-4 
+                  pb-4
+                  pt-5 
+                  text-left 
+                  shadow-xl 
+                  transition-all
+                  w-full
+                  sm:my-8 
+                  sm:w-full 
+                  sm:max-w-3xl
+                  sm:p-6"
+                  style={{height: modalHeight}}
               >
                 <div className="absolute right-0 top-0 pr-4 pt-4 sm:block z-10">
                   <button

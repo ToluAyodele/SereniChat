@@ -17,6 +17,7 @@
     "child_process": "^1.0.2",
     "clsx": "^2.1.0",
     "date-fns": "^3.3.1",
+    "face-api.js": "^0.22.2",
     "fs": "^0.0.1-security",
     "lodash": "^4.17.21",
     "marked": "^12.0.1",

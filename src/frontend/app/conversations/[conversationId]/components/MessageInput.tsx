@@ -2,7 +2,10 @@
 
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 import React, { FC, useState } from "react";
-import { HiArrowUp } from "react-icons/hi2";
+import { HiArrowUp, HiCamera } from "react-icons/hi2";
+
+import FaceEmotionModal from "../../../components/modals/FaceEmotionModal";
+import { set } from "lodash";
 
 interface MessageInputProps {
     placeholder?: string;
@@ -22,6 +25,8 @@ const MessageInput: FC<MessageInputProps> = ({
     errors
 }) => {
     const [textAreaHeight, setTextAreaHeight] = useState('16px');
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
 
 
     const handleTextChange = (e) => {
@@ -40,7 +45,33 @@ const MessageInput: FC<MessageInputProps> = ({
 
     return (
         <>
+            <FaceEmotionModal 
+                isOpen={drawerOpen} 
+                onClose={() => setDrawerOpen(false)}
+            />
             <div id="dynamic-div" className="h-24 fixed flex w-1/2 lg:w-1/2 xl:w-1/2 bottom-0 justify-center">
+                <button
+                    onClick={ () => setDrawerOpen(true) }
+                    className="
+                        cursor-pointer
+                        transition
+                        bg-white
+                    "
+                >
+                    <HiCamera
+                        size={36}
+                        className="
+                            text-black 
+                            rounded-lg 
+                            bg-white 
+                            border-2 
+                            border-black
+                            p-1
+                            mr-2
+                            mb-8
+                        " 
+                    />
+                </button>
                 <div className="w-full lg:w-full xl:w-1/2 mr-5 bg-white">
                     <textarea
                         id={id}
@@ -71,7 +102,7 @@ const MessageInput: FC<MessageInputProps> = ({
                         bg-white
                         "
             >
-                    <HiArrowUp 
+                    <HiArrowUp
                         size={36}
                         className="
                             text-black 

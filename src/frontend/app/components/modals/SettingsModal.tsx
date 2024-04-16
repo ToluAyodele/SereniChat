@@ -48,7 +48,7 @@ const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose, currentUser })
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} modalHeight={"500px"}>
             <form action="" onSubmit={handleSubmit(onSubmit)}>
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">

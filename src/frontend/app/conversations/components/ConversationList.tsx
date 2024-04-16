@@ -81,7 +81,7 @@ const ConversationList: FC<ConversationListProps> = ({
             lg:block
             overflow-y-auto
             border-none
-            bg-blue-600
+            bg-teal-600
             w-full
             left-0
             hidden
