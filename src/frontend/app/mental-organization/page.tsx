@@ -61,7 +61,6 @@ const organizationsData = [
     zip: '10001',
     imageUrl: 'example1.jpg',
   },
-  // Add more organizations as needed
 ]
 
 const OrganizationsPage = () => {

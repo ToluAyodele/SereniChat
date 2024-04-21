@@ -4,12 +4,12 @@ import React, { } from "react";
 
 import EmptyState from '../../components/EmptyState';
 
-const Body = () => {
+const EmptyBody = () => {
     return (
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 h-full justify-center overflow-y-auto">
             <EmptyState />
         </div>
     );
 }
 
-export default Body;
+export default EmptyBody;

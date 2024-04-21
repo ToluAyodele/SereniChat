@@ -6,7 +6,8 @@ import useConversation from "../../../../app/hooks/useConversation";
 import React, { FC, useEffect, useState, useRef } from "react";
 import MessageBox from "./MessageBox";
 import axios from "axios";
-import { find } from 'lodash';
+import EmptyBody from "../../components/EmptyBody";
+import EmptyState from "../../../components/EmptyState";
 
 interface BodyProps {
     initialMessages: FullMessageType[];
@@ -28,10 +29,8 @@ const Body: FC<BodyProps> = ({
     
             setMessages((prevMessages) => {
                 if (!prevMessages.find((msg) => msg.id === message.id)) {
-                    // Append the new message to the previous messages
                     return [...prevMessages, message];
                 }
-                // Return the previous messages if the new message already exists
                 return prevMessages;
             });
     
@@ -60,12 +59,14 @@ const Body: FC<BodyProps> = ({
         <div className="flex justify-center items-center h-full">
             <div className="text-center items-center flex flex-col w-3/5">
                 <div className="flex-1 mt-8">
-                    { messages.map((message, i) => (
+                    { messages && messages.length > 0 &&  messages.map((message, _) => (
                         <MessageBox
                             key={message.id}
                             data={message}
                         />
-                    ))}
+                    )) }
+                    
+                    { messages && messages.length == 0 && <EmptyBody /> }
                     <div ref={bottomRef} className="pt-24" />
                 </div>
             </div>
