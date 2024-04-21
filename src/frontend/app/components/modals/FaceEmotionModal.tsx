@@ -1,6 +1,7 @@
 import { User } from '@prisma/client';
 import React, { FC, useEffect, useRef } from 'react';
 import * as faceapi from 'face-api.js';
+import GaugeChart from 'react-gauge-chart';
 
 import Modal from './Modal';
 
@@ -75,26 +76,36 @@ const FaceEmotionModal: FC<FaceEmotionModalProps> = ({ isOpen, onClose }) => {
             }, 100);
         };
         
-
         loadModels();
         setUpCamera();
         startFaceDetection();
     });
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} modalHeight={"650px"}>
-            <div className='camera flex justify-center items-center'>
-                <canvas ref={canvasRef} className="absolute z-10" style={{ marginTop : '580px'}} height={510} width={700} />
-                <video 
-                    ref={videoRef} 
-                    id='video' 
-                    width="720"
-                    autoPlay={true}
-                    style={{ 'height' : '550px'}}
-                    className='absolute top-12 z-0'>
-                </video>
-            </div>
-        </Modal>
+        <>  
+            <Modal isOpen={isOpen} onClose={onClose} modalHeight={"1150px"}>
+                <div className='camera flex justify-center items-center'>
+                    <canvas ref={canvasRef} className="absolute z-10" style={{ marginTop : '580px'}} height={510} width={700} />
+                    <video 
+                        ref={videoRef} 
+                        id='video' 
+                        width="720"
+                        autoPlay={true}
+                        style={{ 'height' : '550px'}}
+                        className='absolute top-12 z-0'>
+                    </video>
+                </div>
+                <GaugeChart
+                    id="gauge-chart5"
+                    nrOfLevels={10}
+                    arcsLength={[0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]}
+                    colors={['#5BE12C', '#F5CD19', '#EA4228']}
+                    percent={0.37}
+                    arcPadding={0.02}
+                    style={{ 'height' : '250px' ,'marginTop' : '650px'}}
+                />
+            </Modal>
+        </>
     );
 }
 

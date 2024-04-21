@@ -43,7 +43,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children, modalHeight }) => {
                   transform 
                   overflow-hidden 
                   rounded-lg 
-                  bg-white
+                  bg-black
                   px-4 
                   pb-4
                   pt-5 
