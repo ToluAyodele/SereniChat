@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import type { User } from '@prisma/client';
 import Image from 'next/image';
 

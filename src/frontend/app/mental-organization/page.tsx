@@ -2,9 +2,6 @@
 import React from 'react'
 import { useState } from 'react'
 
-// pages/OrganizationsPage.js
-
-// Mock data for organizations (replace this with actual data later)
 const organizationsData = [
   {
     id: 1,

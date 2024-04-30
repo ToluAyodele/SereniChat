@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import React, { ReactNode } from 'react'
+import clsx from 'clsx'
 
 import './globals.css'
 
@@ -23,7 +24,12 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning={true}
-        className={inter.className}
+        className={clsx(
+          `
+          ${inter.className}
+          overflow-hidden
+          `
+        )}
       >
         <AuthContext>
           <ToasterContext />

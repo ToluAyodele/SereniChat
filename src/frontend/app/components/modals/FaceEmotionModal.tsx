@@ -1,10 +1,9 @@
 import { User } from '@prisma/client';
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import * as faceapi from 'face-api.js';
-import GaugeChart from 'react-gauge-chart';
+import clsx from 'clsx';
 
 import Modal from './Modal';
-import { get, set } from 'lodash';
 
 interface FaceEmotionModalProps {
     isOpen: boolean;
@@ -16,50 +15,38 @@ const FaceEmotionModal: FC<FaceEmotionModalProps> = ({ isOpen, onClose }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-    // const [faceEmotionPercentage, setFaceEmotionPercentage] = useState<number>(0.50);
-    const [modelsLoaded, setModelsLoaded] = useState<boolean>(false);
-    // const [gaugeValue, setGaugeValue] = useState<number>(0.50);
     const [emotion, setEmotion] = useState<string | null>('');
+    const [emotionColor, setEmotionColor] = useState<string>('bg-white');
+    const [emotionValue, setEmotionValue] = useState<number>(0);
+    const [emotionDetectionCount, setEmotionDetectionCount] = useState<number>(0);
+    const [emotionPercentage, setEmotionPercentage] = useState<string>('50%');
 
-    
+    const [modelsLoaded, setModelsLoaded] = useState<boolean>(false);
 
-    // const consumeFaceEmotions = async (emotions) => {
-    //     await emotions.forEach((emotion, index) => {
-    //         switch(index) {
-    //             case 0:
-    //             case 1:
-    //             case 2:
-    //                 const calculateNegativeEmotions = faceEmotionPercentage + emotion;
-    //                 if (calculateNegativeEmotions > 100) {
-    //                     setFaceEmotionPercentage(100);
-    //                 } else {
-    //                     setFaceEmotionPercentage(calculateNegativeEmotions);
-    //                 }
-    //                 break;
+    const loadModels = async () => {
+        try {
+            await Promise.all([
+                faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+                faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+                faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+                faceapi.nets.faceExpressionNet.loadFromUri('/models')
+            ]);
+        } catch (err) {
+            console.error("Failed to load models", err);
+        }
+    };
 
-    //             case 3:
-    //                 if (faceEmotionPercentage < 50) {
-    //                     setFaceEmotionPercentage(faceEmotionPercentage + emotion);
-    //                 } else if (faceEmotionPercentage > 50) {
-    //                     setFaceEmotionPercentage(faceEmotionPercentage - emotion);
-    //                 }
-    //                 break;
-
-    //             case 4:
-    //             case 5:
-    //                 const calculatePositiveEmotions = faceEmotionPercentage - emotion;
-    //                 if (calculatePositiveEmotions < 0) {
-    //                     setFaceEmotionPercentage(0);
-    //                 } else {
-    //                     setFaceEmotionPercentage(calculatePositiveEmotions);
-    //                 }
-    //                 break;
-                
-    //             default:
-    //                 break;
-    //         }
-    //     });
-    // };
+    const setUpCamera = async () => {
+        if (navigator.mediaDevices.getUserMedia) {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true, 
+                audio: false 
+            });
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+            }
+        }
+    }
 
     const getKeyOfMaxValue = (obj) => {
         let maxKey: string | null = null;
@@ -73,35 +60,34 @@ const FaceEmotionModal: FC<FaceEmotionModalProps> = ({ isOpen, onClose }) => {
         }
 
         setEmotion(maxKey);
+        setEmotionColor(getColor(maxKey));
+        setEmotionValue(maxValue);
+        setEmotionDetectionCount(emotionDetectionCount + 1);
+        setEmotionPercentage(`${((emotionValue / emotionDetectionCount) * 100) % 100}%`);
     };
 
+    const getColor = (emotion: string | null) => {
+        switch (emotion) {
+            case 'neutral':
+                return 'bg-gray-500';
+            case 'happy':
+                return 'bg-green-500';
+            case 'sad':
+                return 'bg-blue-500';
+            case 'angry':
+                return 'bg-red-500';
+            case 'fearful':
+                return 'bg-yellow-500';
+            case 'disgusted':
+                return 'bg-purple-500';
+            case 'surprised':
+                return 'bg-indigo-500';
+            default:
+                return 'bg-white';
+        }
+    };
 
     useEffect(() => {
-        const loadModels = async () => {
-            try {
-                await Promise.all([
-                    faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-                    faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-                    faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-                    faceapi.nets.faceExpressionNet.loadFromUri('/models')
-                ]);
-            } catch (err) {
-                console.error("Failed to load models", err);
-            }
-        };
-    
-        const setUpCamera = async () => {
-            if (navigator.mediaDevices.getUserMedia) {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: true, 
-                    audio: false 
-                });
-                if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                }
-            }
-        }
-    
         if (isOpen && !modelsLoaded) {
             loadModels();
             setUpCamera();
@@ -166,20 +152,23 @@ const FaceEmotionModal: FC<FaceEmotionModalProps> = ({ isOpen, onClose }) => {
                         style={{ 'height' : '550px'}}
                         className='absolute top-12 z-0'>
                     </video>
-                    <div className="text-white">
-                        { emotion }
-                    </div>
                 </div>
-                {/* <GaugeChart
-                    id="gauge-chart5"
-                    nrOfLevels={10}
-                    arcsLength={[0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]}
-                    colors={['#5BE12C', '#F5CD19', '#EA4228']}
-                    percent={Math.round(gaugeValue * 100) / 100}
-                    arcPadding={0.02}
-                    animate={false}
-                    style={{ 'height' : '250px' ,'marginTop' : '650px'}}
-                /> */}
+                <div className="text-white" style={{ marginTop: '585px', fontSize: '32px'}}>
+                    { emotion }
+                </div>
+                <div
+                    className={clsx(`
+                        ${emotionColor} 
+                        h-12 
+                        transition-all 
+                        ease-in-out 
+                        duration-100
+                    `)}
+                    style={{ width: emotionPercentage }}>
+                </div>
+                {/* <p className="text-white">
+                    { emotionPercentage }
+                </p> */}
             </Modal>
         </>
     );
