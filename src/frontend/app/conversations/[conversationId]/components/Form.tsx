@@ -37,39 +37,43 @@ const Form = () => {
                      //     }    
                      // })    
                      const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-                                 try {            
-                                    setValue('message', '', { shouldValidate: true });            
-                                    // gets the sentiment of the user message            
-                                    // const sentimentAnalysisResponse = await axios.post('/api/sentiment-analysis', { inputs: data.message })            
-                                    // const sentiment = sentimentAnalysisResponse.data;            
-                                    // // // gets the list of synonyms for the sentiment            
-                                    // const synonyms = await axios.post('http://127.0.0.1:8000/synonyms/', { sentiment });            
-                                    // gets the response from sereni chat            
-                                    const sereniChatResponse = await axios.post('/api/sereni-chat', {                
-                                        system: `${sereniChatPrompt}\n}`,                
-                                        user: data.message,                
-                                        assistant: lastMessage            
-                                    });                          
-                                    // saves the user message then the sereni chat response            
-                                    await axios.post('/api/messages', {                
-                                        ...data,                
-                                        // sentiment,                
-                                        conversationId,                
-                                        isUser: true,            
-                                    });            
-                                   
-                                    await axios.post('/api/messages', {                
-                                        message: sereniChatResponse.data,                
-                                        conversationId,                
-                                        isUser: false            
-                                    });            
-                                   
-                                    setLastMessage(sereniChatResponse.data);        
-                               
-                                } catch (error) {            
-                                    console.error('ERROR: ', error);        
-                                }    
-                            };    
+                        try {
+                            setValue('message', '', { shouldValidate: true });
+                            
+                            // Get detected emotion from sessionStorage
+                            const detectedEmotion = sessionStorage.getItem('detectedEmotion');
+                            
+                            // Send the emotion along with the user message and assistant's last response
+                            const sereniChatResponse = await axios.post('/api/sereni-chat', {
+                                system: `${sereniChatPrompt}\n}`,
+                                user: data.message,
+                                assistant: lastMessage,
+                                emotion: detectedEmotion // Add the emotion here
+                            });
+                    
+                            // Save the user's message
+                            await axios.post('/api/messages', {
+                                ...data,
+                                conversationId,
+                                isUser: true,
+                            });
+                    
+                            // Save the response from SereniChat
+                            await axios.post('/api/messages', {
+                                message: sereniChatResponse.data,
+                                conversationId,
+                                isUser: false
+                            });
+                    
+                            setLastMessage(sereniChatResponse.data);
+                    
+                        } catch (error) {
+                            console.error('ERROR: ', error);
+                        }
+                    };
+                    
+
+    
                            
                            
                             return (        

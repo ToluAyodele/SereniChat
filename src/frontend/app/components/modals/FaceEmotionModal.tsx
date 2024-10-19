@@ -136,7 +136,7 @@ const FaceEmotionModal: FC<FaceEmotionModalProps> = ({ isOpen, onClose }) => {
                         height: canvas.height
                     });
 
-                    console.log(detections)
+                    // console.log(detections)
     
                     faceapi.draw.drawDetections(canvas, resized);
                     faceapi.draw.drawFaceLandmarks(canvas, resized);
