@@ -129,7 +129,7 @@ env.bak/
 venv.bak/
 
 #dependencies
-node_modules/
+src/node_modules/
 
 # Spyder project settings
 .spyderproject
