@@ -15,7 +15,7 @@ interface MessageBoxProps {
 const MessageBox: FC<MessageBoxProps> = ({
     data,
 }) => {
-
+    //console.log(data)
     const container = clsx("flex gap-5 p-6 justify-center");
     const body = clsx("flex flex-col gap-2 w-3/5");
 
