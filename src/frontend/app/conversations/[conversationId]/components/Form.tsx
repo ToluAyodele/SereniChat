@@ -4,6 +4,8 @@ import { sereniChatPrompt } from '../prompt';
 import useConversation from "../../../../app/hooks/useConversation";
 import axios from "axios"; import { FieldValues, SubmitHandler, set, useForm } from "react-hook-form";
 import React, { useEffect, useState } from "react";
+import VoiceButton from '../../../components/voicebutton/VoiceButton';
+
 
 const Form = () => {    
     const { conversationId } = useConversation();    
@@ -21,6 +23,11 @@ const Form = () => {
             message: ''        
         }    
     });    
+
+    const handleTranscription = (text: string) => {
+        console.log('Transcription:', text);
+        // Further processing of transcribed text
+      };
    
     // Hugging Face API needs to be preloaded to avoid a cold start with the inference API    
      // This is a workaround to avoid the cold start    
@@ -99,7 +106,7 @@ const Form = () => {
                                         />                              
                                        
                                     </form>        
-                               
+                                    <VoiceButton onTranscription={handleTranscription} />
                                 </div>    
                                
                             );
