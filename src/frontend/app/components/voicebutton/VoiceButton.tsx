@@ -22,7 +22,7 @@ const VoiceButton: React.FC<VoiceButtonProps> = ({ onTranscription }) => {
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
         setTranscription(transcript);
-        onTranscription(transcript);
+        onTranscription(transcript); // Send transcription to the parent component
       };
 
       recognition.onend = () => {
@@ -34,9 +34,11 @@ const VoiceButton: React.FC<VoiceButtonProps> = ({ onTranscription }) => {
         setRecording(false);
       };
 
+      // Start or stop the recognition based on the current state
       recording ? recognition.stop() : recognition.start();
     } else {
       console.error('Web Speech API is not supported in this browser.');
+      alert('Web Speech API is not supported in this browser.');
     }
   };
 

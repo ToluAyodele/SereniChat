@@ -11,6 +11,7 @@ const Form = () => {
     const { conversationId } = useConversation();    
     const [isPreloaded, setIsPreloaded] = useState(false);    
     const [lastMessage, setLastMessage] = useState('This is the first message of the conversation.');    
+    const [isLoading, setIsLoading] = useState(false);  
     const {
         register,
         handleSubmit,
@@ -24,11 +25,36 @@ const Form = () => {
         }    
     });    
 
-    const handleTranscription = (text: string) => {
+    const handleTranscription = async (text: string) => {
         console.log('Transcription:', text);
-        // Further processing of transcribed text
-      };
-   
+        setIsLoading(true);
+    
+        try {
+            // Sending the transcription to the backend explicitly
+            const detectedEmotion = sessionStorage.getItem('detectedEmotion'); // Get emotion if stored
+    
+            const response = await axios.post('/api/sereni-chat', {
+                transcription: text, // Send transcription explicitly
+                system: sereniChatPrompt,
+                assistant: lastMessage, // Replace with the last assistant message as needed
+                emotion: detectedEmotion // Include detected emotion if available
+            });
+    
+            console.log('Response from backend:', response.data);
+    
+            // Update chat UI with the response
+            // You can call your existing function to display the response
+            // Example: displayChatResponse(response.data);
+    
+        } catch (error) {
+            console.error('Error sending transcription:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    
+    
+    
     // Hugging Face API needs to be preloaded to avoid a cold start with the inference API    
      // This is a workaround to avoid the cold start    
       // useEffect(() => {     //     if (!isPreloaded) {    
@@ -105,8 +131,11 @@ const Form = () => {
                                             placeholder="Message Serenity..."                
                                         />                              
                                        
+                                       <VoiceButton onTranscription={handleTranscription} />
+
                                     </form>        
-                                    <VoiceButton onTranscription={handleTranscription} />
+                                    
+
                                 </div>    
                                
                             );
